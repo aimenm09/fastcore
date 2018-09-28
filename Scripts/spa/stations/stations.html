@@ -1,0 +1,115 @@
+﻿<div class="row">
+    <div class="panel-heading clearfix">
+        <h4 class="panel-title pull-left">{{localTranslate('Station')}}</h4>
+        <div ng-if="isSearching">
+            <div style="border: solid 1px black; margin-left: 200px; padding: 5px; white-space: nowrap; display: inline-block;">
+                <button class="btn btn-primary" ng-click="searchAgain()">{{localTranslate('SearchAgain', true)}}</button><span style="color: white;"> {{localTranslate('ForSearchOn', true)}} {{SearchInfo.ColumnName}} {{localTranslate('for', true)}} {{SearchInfo.SearchTerm}}</span>
+                <button style="float: right; height: 18px; line-height: normal; margin: 0; padding: 0; margin-left: 5px; background-color: lightgray; margin-top: 7.5px;" ng-click="closeSearch()">X</button>
+            </div>
+        </div>
+    </div>
+    <div id="content" style="display: flex; height: 75vh; flex-direction: row; margin: 0; overflow: auto; padding-top: 5px;">
+        <div style="flex: 1; display: flex; flex-direction: column;">
+            <table ng-if="false" style="margin-bottom: 5px; height: 30px; width: 0;">
+                <tr>
+                    <td width="10">&nbsp;</td>
+                    <td>{{localTranslate('SKU', true)}}:&nbsp;</td>
+                    <td>
+                        <select ng-model="selectedSkuFilter" style="height: 25px;">
+                            <option ng-repeat="sku in skuFilters">{{sku}}</option>
+                        </select>
+                    </td>
+                    <td width="5">&nbsp;</td>
+                    <td>{{localTranslate('Description', true)}}:&nbsp;</td>
+                    <td>
+                        <select ng-model="selectedDescriptionFilter" style="height: 25px;">
+                            <option ng-repeat="desc in descriptionFilters">{{desc}}</option>
+                        </select>
+                    </td>
+                    <td width="5">&nbsp;</td>
+                    <td>{{localTranslate('Barcode', true)}}:&nbsp;</td>
+                    <td>
+                        <select ng-model="selectedBarcodeFilter" style="height: 25px;">
+                            <option ng-repeat="code in barcodeFilters">{{code}}</option>
+                        </select>
+                    </td>
+                    <td width="5">&nbsp;</td>
+                    <td><button ng-click="loadItems()">{{localTranslate('Filter', true)}}</button></td>
+                </tr>
+            </table>
+            <p class="heading-table">&nbsp;{{localTranslate('Stations')}}</p>
+            <table ng-if="loadingItems" class="loading" style="border-bottom: 1px solid black; height: 100%; width: 100%;">
+                <tr><td style="text-align: center;"><i class="fa fa-refresh fa-5x fa-spin"></i></td></tr>
+                <tr><td style="text-align: center;"><label class="label label-primary">{{localTranslate('Loading', true)}} {{localTranslate('Stations')}}...</label></td></tr>
+            </table>
+            <table id="Stations" ng-if="!loadingItems" class="scrollTable" style="flex: 1;">
+                <thead>
+                    <tr>
+                        <th id="colStations{{column.DataId}}" ng-repeat="column in columnNames" ng-attr-style="{{column.Style}}">{{localTranslate(column.Caption)}}</th>
+                        <th width="{{fillWidths['Stations']}}">&nbsp;</th>
+                        <th id="padColStations" style="border: none; width: 17px; max-width: 17px; min-width: 17px; display: none;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in Stations" ng-include="getTemplate(item)" style="z-index: 200;"
+                        ng-class-odd="{'row-odd': item.StationId != selectedItemNumber}"
+                        ng-class-even="{'row-even': item.StationId != selectedItemNumber}"
+                        ng-class="{rowSelected: item.StationId == selectedItemNumber}"></tr>
+                </tbody>
+            </table>
+            <table ng-if="isEditing" style="margin: 5px; width: 100px;">
+                <tr>
+                    <td>
+                        <button ng-click="save()">{{localTranslate('Save', true)}}</button>
+                    </td>
+                    <td width="5px">&nbsp;</td>
+                    <td>
+                        <button ng-click="cancel()">{{localTranslate('Cancel', true)}}</button>
+                    </td>
+                </tr>
+            </table>
+            <div ng-if="!loadingItems" class="text-center" style="height: 35px;">
+                <custom-pager page="{{page}}" pages-count="{{pagesCount}}" total-count="{{totalCount}}" search-func="loadItems(page)"></custom-pager>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav id="context-menu" class="context-menu stations" style="width: 200px; z-index: 2000;">
+    <ul class="context-menu__items">
+        <li class="context-menu__item">
+            <a id="New" class="context-menu__link active"><i class="fa fa-tasks"></i> {{localTranslate('AddNew', true)}}</a>
+        </li>
+        <li><hr style="height: 5px; padding: 0; margin: 0" /></li>
+        <li class="context-menu__item">
+            <a id="Edit" class="context-menu__link active"><i class="fa fa-random"></i> {{localTranslate('EditItem', true)}}</a>
+        </li>
+        <li class="context-menu__item">
+            <a id="LinkStation" class="context-menu__link active"><i class="fa fa-random"></i> {{localTranslate('LinkStation')}}</a>
+        </li>
+        <!--<li class="context-menu__item">
+        <a id="Delete" class="context-menu__link active" data-action="Delete"><i class="fa fa-remove"></i> {{localTranslate('DeleteItem', true)}}</a>
+        </li>-->
+        <li><hr style="height: 5px; padding: 0; margin: 0" /></li>
+        <li class="context-menu__item">
+            <a id="Search" class="context-menu__link active"><i class="fa fa-eye"></i> {{localTranslate('Search', true)}}...</a>
+        </li>
+    </ul>
+</nav>
+
+<script type="text/ng-template" id="display">
+    <td ng-repeat="column in columnNames" title="{{localTranslate(item[column.Caption])}}" id="{{column.DataId}}" ng-attr-style="{{column.Style}}">
+        <input ng-if="column.DataType == 'Boolean'" type="checkbox" ng-checked="item[column.DataId]" onclick="return false;" style="margin: auto; display: block; height: 18px; width: 18px" />
+        <span ng-if="column.DataType != 'Boolean'">{{item[column.DataId]}}</span>
+    </td>
+    <td width="{{fillWidths['Stations']}}">&nbsp;</td>
+</script>
+
+<script type="text/ng-template" id="edit">
+    <td ng-repeat="column in columnNames" title="{{localTranslate(item[column.DataId])}}" ng-attr-style="{{column.Style}}">
+        <input ng-if="column.DataId != 'StationId' && column.DataType != 'Boolean'" class="input" type="text" ng-model="editItem[column.DataId]" style="color: black; width: 100%; z-index: 200; position: relative;" />
+        <input ng-if="column.DataType == 'Boolean'" type="checkbox" ng-checked="item[column.DataId]" style="color: black; margin: auto; display: block; z-index: 200; position: relative; height: 18px; width: 18px" />
+        <span ng-if="column.DataId == 'StationId'" style="color: black; z-index: 200;">{{item[column.DataId]}}</span>
+    </td>
+    <td width="{{fillWidths['Stations']}}">&nbsp;</td>
+</script>

@@ -1,0 +1,37 @@
+﻿<div class="panel panel-primary">
+    <div class="panel-heading">
+        {{SearchInfo.Title}}
+    </div>
+    <form role="form" novalidate angular-validator name="groupSearchForm" angular-validator-submit="addSearchTerm()">
+        <div class="panel-body">
+            <div class="">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="control-label">{{localTranslate('SearchFor', true)}}:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <select ng-options="col as localTranslate(col.Caption) for col in SearchInfo.Columns track by col.Caption"
+                                    required required-message="'Search field is required'"
+                                    ng-model="SearchInfo.SelectedColumn" style="height: 25px; width: 200px;">
+                            </select>
+                            <input ng-if="SearchInfo.SelectedColumn.DataType != 'Boolean'" autofocus="" type="text" style="margin-top: 10px; width: 200px;" class="form-control"
+                                   required required-message="'Search term is required'" ng-model="SearchInfo.SearchTerm"
+                                   name="searchTerm" id="searchTerm" />
+                            <div ng-if="SearchInfo.SelectedColumn.DataType == 'Boolean'" style="margin-top: 10px;">
+                                <input type="radio" id="yes" name="yesno" ng-checked="SearchInfo.Data == 1" />
+                                <label for="yes">Yes</label>
+                                <input type="radio" id="no" name="yesno" ng-checked="SearchInfo.Data == 0" />
+                                <label for="no">No</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer clearfix">
+            <div class="pull-right">
+                <button type="submit" class="btn btn-primary">{{localTranslate('OK', true)}}</button>
+                <button type="button" class="btn btn-primary" ng-click="cancel()">{{localTranslate('Cancel', true)}}</button>
+            </div>
+        </div>
+    </form>
+</div>

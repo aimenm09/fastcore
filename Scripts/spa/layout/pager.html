@@ -1,0 +1,13 @@
+﻿<div ng-hide="(!pagesCount || pagesCount < 1)" style="display: flex; justify-content: center; margin-top: 5px;">
+    <div ng-class="(page == 0) ? 'grayscale' : 'active'" ng-click="search(0)"><img style="display: flex; margin: 0 3px; border: 1px solid #7c7155;" src="Content/images/page-first.png" /></div>
+    <div ng-class="(page == 0) ? 'grayscale' : 'active'" ng-click="search(page-1)"><img style="display: flex; margin: 0 3px; border: 1px solid #7c7155;" src="Content/images/page-prev.png" /></div>
+
+    <span style="vertical-align: central; padding-left: 10px; padding-top: 3px;">{{localTranslate('Page')}}&nbsp;</span>
+    <select ng-model="selectedPage" ng-change="loadPage()" style="height: 25px;">
+        <option ng-repeat="x in pages()" ng-selected="page == x">{{x + 1}}</option>
+    </select>
+    <span style="vertical-align: central; padding-right: 10px; padding-top: 3px;">&nbsp;{{localTranslate('of')}} {{pagesCount}}</span>
+
+    <div ng-class="(page == pagesCount - 1) ? 'grayscale' : 'active'" ng-click="search(pagePlus(1))"><img style="display: flex; margin: 0 3px; border: 1px solid #7c7155;" src="Content/images/page-next.png" /></div>
+    <div ng-class="(page == pagesCount - 1) ? 'grayscale' : 'active'" ng-click="search(pagesCount - 1)"><img style="display: flex; margin: 0 3px; border: 1px solid #7c7155;" src="Content/images/page-last.png" /></div>
+</div>

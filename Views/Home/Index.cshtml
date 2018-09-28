@@ -1,0 +1,37 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html ng-app="fastTrakWebUI">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>FastTrak Web</title>
+    <link href="~/Content/css/font-awesome.css" rel="stylesheet" />
+    @Styles.Render("~/Content/css_styles")
+    @Scripts.Render("~/bundles/modernizr")
+    <script type="text/javascript">
+        var invataBiLimitedBrowsers = '@System.Configuration.ConfigurationManager.AppSettings["InvataBILimitedBrowsers"].ToString()';
+        var invataBiTabCount = '@System.Configuration.ConfigurationManager.AppSettings["InvataBITabCount"].ToString()';
+    </script>
+</head>
+<body id="mainBody" ng-controller="rootCtrl">
+    <top-bar></top-bar>
+    <div class="row-offcanvas2 row-offcanvas-left2" style="padding-top: 10px;">
+        @*<side-bar></side-bar>*@
+        <div id="main">
+            <div class="col-md-12">
+                <div class="page {{ pageClass }}" style="padding: 5px;" ng-view></div>
+                <span id="ruler"></span>
+            </div>
+        </div>
+    </div><!--/row-offcanvas -->
+    @Scripts.Render("~/bundles/vendors")
+    @Scripts.Render("~/bundles/spa")
+    <script src="~/home/settings"></script>
+    <script src="~/signalr/hubs"></script>
+</body>
+</html>

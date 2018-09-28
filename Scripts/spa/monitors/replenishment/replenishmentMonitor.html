@@ -1,0 +1,203 @@
+﻿<div class="row">
+    <div class="panel-heading clearfix">
+        <h4 class="panel-title pull-left">{{localTranslate('ReplenishmentMonitor', true)}}</h4>
+    </div>
+    <div id="content" class="flex-row" style="height: 75vh;overflow-x:auto;">
+        
+            <div class="flex-column-1" style="min-width: 817px; max-width: 817px;">
+                <!-- Locations -->
+                <div class="flex-column-1" style="min-height: 125px; max-height: 125px;">
+                    <table id="Stations" class="scrollTable" style="height: 100%; min-width: 815px; max-width: 815px;">
+                        <thead>
+                            <tr>
+                                <th id="colStations{{column.DataId}}" ng-repeat="column in locationColumnNames" ng-attr-style="{{column.Style}}">{{localTranslate(column.Caption)}}</th>
+                                <th width="{{fillWidths['Stations']}}">&nbsp;</th>
+                                <th ng-attr-id="padColStations" style="width: 17px; max-width: 17px; min-width: 17px; display: none;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in Stations" ng-class-odd="'row-odd'" ng-class-even="'row-even'">
+                                <td ng-repeat="column in locationColumnNames" title="{{localTranslate(item[column.Caption])}}" ng-attr-style="{{column.Style}}">
+                                    <span ng-if="column.Caption == 'Location'" style="z-index: 200; position: relative;">
+                                        <input type="checkbox" style="margin-left: 5px; height: 18px; width: 18px; vertical-align: middle; cursor: pointer;"
+                                               value="{{item}}"
+                                               ng-checked="IsStationSelected(item)"
+                                               ng-click="toggleStationSelection(item)" />
+                                        <span ng-click="toggleStationSelection(item)" style="vertical-align: middle; cursor: pointer;">{{item[column.DataId]}}</span>
+                                    </span>
+                                    <span ng-if="column.Caption != 'Location'">{{item[column.DataId]}}</span>
+                                </td>
+                                <td width="{{fillWidths['Stations']}}">&nbsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Workstations -->
+                <div class="flex-column-1 pt-5">
+                    <table ng-if="loadingLocations" style="height: 100%; width: 100%; min-width: 815px; max-width: 815px;">
+                        <tr><td style="text-align: center;"><i class="fa fa-refresh fa-5x fa-spin"></i></td></tr>
+                        <tr><td style="text-align: center;"><label class="label label-primary">{{localTranslate('Loading', true)}} {{localTranslate('Locations')}}...</label></td></tr>
+                    </table>
+                    <div ng-if="!loadingLocations" style="height: 100%; width: 100%;">
+                        <table id="Locations" class="scrollTable" style="height: 100%; width: 100%; min-width: 815px; max-width: 815px;">
+                            <thead>
+                                <tr>
+                                    <th id="colLocations{{column.DataId}}" ng-repeat="column in workstationColumnNames" ng-attr-style="{{column.Style}}">{{localTranslate(column.Caption)}}</th>
+                                    <th width="{{fillWidths['Locations']}}" />
+                                    <th id="padColLocations" style="border: none; width: 17px; max-width: 17px; min-width: 17px; display: none;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in Locations"
+                                    ng-class-odd="{'row-odd': item.LocationID != selectedItemNumber}"
+                                    ng-class-even="{'row-even': item.LocationID != selectedItemNumber}"
+                                    ng-class="{rowSelected: item.LocationID == selectedItemNumber}">
+                                    <td ng-repeat="column in workstationColumnNames" title="{{localTranslate(item[column.Caption])}}" ng-attr-style="{{column.Style}}">
+                                        <span ng-if="column.Caption == 'Workstation'">
+                                            <input type="checkbox" style="margin-left: 5px; height: 18px; width: 18px; vertical-align: middle; cursor: pointer; z-index: 200; position: relative;"
+                                                   value="{{item}}"
+                                                   ng-checked="IsWorkstationSelected(item)"
+                                                   ng-click="toggleWorkstationSelection(item)" />
+                                            <span ng-click="toggleWorkstationSelection(item)" style="vertical-align: middle; cursor: pointer; z-index: 200; position: relative;">{{item[column.DataId]}}</span>
+                                        </span>
+                                        <span ng-if="column.Caption != 'Workstation'">{{item[column.DataId]}}</span>
+                                    </td>
+
+                                    <td width="{{fillWidths['Locations']}}">&nbsp;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div ng-if="!loadingLocations" class="text-center" style="flex: 1;">
+                        <custom-pager page="{{page}}" pages-count="{{pagesCount}}" total-count="{{totalCount}}" search-func="loadGroups(page)"></custom-pager>
+                    </div>
+                </div>
+            </div>
+            <!-- Details -->
+            <div ng-if="!loadingDetails && locationDetails != null" class="flex-row pl-5">
+                <!-- Workstation Details -->
+                <div class="flex-column-1 border-1" style="min-width: 300px; max-width: 300px;">
+                    <p class="heading-table text-center">&nbsp;{{localTranslate('ToteInformation')}}</p>
+                    <table id="Details" class="scrollTable border-0" style="flex:1; min-width: 100%; max-width: 100%;">
+                        <thead>
+                            <tr>
+                                <th style="padding: 0 5px; min-width: 175px; max-width: 175px; cursor: pointer;">{{localTranslate('Workstation')}}</th>
+                                <th style="padding: 0 5px; min-width: 150px; max-width: 150px; cursor: pointer;"><i>{{localTranslate('Multiple')}}</i></th>
+                                <th width="{{fillWidths['Details']}}"></th>
+                                <th ng-attr-id="padColDetails" style="width: 17px; max-width: 17px; min-width: 17px; display: none;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 0 5px; min-width: 175px; max-width: 175px;">{{localTranslate('EstimatedReplenTime')}}:&nbsp;</td>
+                                <td style="padding: 0 5px; min-width: 150px; max-width: 150px;">&nbsp;{{locationDetails.Details.EstReplenTime}}</td>
+                                <td width="{{fillWidths['Details']}}"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0 5px; min-width: 175px; max-width: 175px;">{{localTranslate('ProcessingUnits')}}:&nbsp;</td>
+                                <td style="padding: 0 5px; min-width: 150px; max-width: 150px;">&nbsp;{{locationDetails.Details.ProcessingUnits}}</td>
+                                <td width="{{fillWidths['Details']}}"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0 5px; min-width: 175px; max-width: 175px;">{{localTranslate('EstCases')}}:&nbsp;</td>
+                                <td style="padding: 0 5px; min-width: 150px; max-width: 150px;">&nbsp;{{locationDetails.Details.EstCases}}</td>
+                                <td width="{{fillWidths['Details']}}"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0 5px; min-width: 175px; max-width: 175px;">{{localTranslate('EstTotes')}}:&nbsp;</td>
+                                <td style="padding: 0 5px; min-width: 150px; max-width: 150px;">&nbsp;{{locationDetails.Details.EstTotes}}</td>
+                                <td width="{{fillWidths['Details']}}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex-column-1 pl-5">
+                    <!-- Pending Units -->
+                    <div class="flex-column-1 border-1" style="min-width: 200px;">
+                        <p class="heading-table text-center">{{localTranslate('PendingUnits')}}</p>
+                        <table id="PendingUnits" class="scrollTable border-0" style="flex:1; height: 80%;">
+                            <thead>
+                                <tr>
+                                    <th id="colPendingUnits{{column.DataId}}" ng-repeat="column in pendingUnitsColumnNames" ng-attr-style="{{column.Style}}">{{localTranslate(column.Caption)}}</th>
+                                    <th width="{{fillWidths['PendingUnits']}}">&nbsp;</th>
+                                    <th ng-attr-id="padColPendingUnits" style="width: 17px; max-width: 17px; min-width: 17px; display: none;"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="locationDetails">
+                                <tr ng-repeat="item in locationDetails.PendingUnits"
+                                    ng-class-odd="{'row-odd': item.LocationId != locationDetails.selectedPendingUnitsLocationId}"
+                                    ng-class-even="{'row-even': item.LocationId != locationDetails.selectedPendingUnitsLocationId}"
+                                    ng-class="{rowSelected: item.LocationId == locationDetails.selectedPendingUnitsLocationId}">
+                                    <td ng-repeat="column in pendingUnitsColumnNames" title="{{localTranslate(item[column.Caption])}}" ng-attr-style="{{column.Style}}">{{item[column.DataId]}}</td>
+                                    <td width="{{fillWidths['PendingUnits']}}">&nbsp;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Staged Pallets -->
+                    <div class="flex-column-1 border-1 mt-5" style="min-width: 200px;">
+                        <p class="heading-table text-center">{{localTranslate('StagedPallets')}}</p>
+                        <table ng-if="!loadingPallets" id="StagedPallets" class="scrollTable border-0" style="flex:1; height: 80%;">
+                            <thead>
+                                <tr>
+                                    <th id="colStagedPallets{{column.DataId}}" ng-repeat="column in stagedPalletsColumnNames" ng-attr-style="{{column.Style}}">{{localTranslate(column.Caption)}}</th>
+                                    <th width="{{fillWidths['StagedPallets']}}">&nbsp;</th>
+                                    <th ng-attr-id="padColStagedPallets" style="width: 17px; max-width: 17px; min-width: 17px; display: none;"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="locationDetails">
+                                <tr ng-repeat="item in locationDetails.StagedPallets"
+                                    ng-class-odd="{'row-odd': item.LocationId != locationDetails.selectedStagedPalletsLocationId}"
+                                    ng-class-even="{'row-even': item.LocationId != locationDetails.selectedStagedPalletsLocationId}"
+                                    ng-class="{rowSelected: item.LocationId == locationDetails.selectedStagedPalletsLocationId}">
+                                    <td ng-repeat="column in stagedPalletsColumnNames" title="{{localTranslate(item[column.Caption])}}" ng-attr-style="{{column.Style}}">{{item[column.DataId]}}</td>
+                                    <td width="{{fillWidths['StagedPallets']}}">&nbsp;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+       
+    </div>
+</div>
+
+<!--<nav id="context-menu" class="context-menu locations" style="width: 100px; z-index: 200;">
+    <ul class="context-menu__items">
+        <li class="context-menu__item">
+            <a id="details" ng-class="getLocationMenuClass('details')" class="context-menu__link"><i class="fa fa-tasks"></i> {{localTranslate('Details')}}</a>
+        </li>
+        <li class="context-menu__item">
+            <a id="search" class="context-menu__link active"><i class="fa fa-eye"></i> {{localTranslate('Search')}}...</a>
+        </li>
+        <li class="context-menu__item">
+            <a id="refresh" class="context-menu__link active"><i class="fa fa-refresh"></i> {{localTranslate('Refresh')}}</a>
+        </li>
+    </ul>
+</nav>
+
+<nav id="context-menu" class="context-menu procLPN" style="width: 100px; z-index: 200;">
+    <ul class="context-menu__items">
+        <li class="context-menu__item">
+            <a id="auditTrail" class="context-menu__link active"><i class="fa fa-eye"></i> {{localTranslate('AuditTrail')}}</a>
+        </li>
+        <li class="context-menu__item">
+            <a id="search" class="context-menu__link active"><i class="fa fa-eye"></i> {{localTranslate('Search')}}...</a>
+        </li>
+        <li class="context-menu__item">
+            <a id="refresh" class="context-menu__link active"><i class="fa fa-refresh"></i> {{localTranslate('Refresh')}}</a>
+        </li>
+    </ul>
+</nav>
+
+<nav id="context-menu" class="context-menu pendLPN" style="width: 100px; z-index: 200;">
+    <ul class="context-menu__items">
+        <li class="context-menu__item">
+            <a id="auditTrail" class="context-menu__link active"><i class="fa fa-eye"></i> {{localTranslate('AuditTrail')}}</a>
+        </li>
+        <li><hr style="height: 5px; padding: 0; margin: 0" /></li>
+        <li class="context-menu__item">
+            <a id="refresh" class="context-menu__link active"><i class="fa fa-refresh"></i> {{localTranslate('Refresh')}}</a>
+        </li>
+    </ul>
+</nav>-->

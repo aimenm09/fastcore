@@ -1,0 +1,177 @@
+﻿<div class="row">
+    <div class="tab-container">
+        <div class="ng-isolate-scope">
+            <ul class="nav nav-tabs" data-as-sortable="" data-ng-model="tabs">
+                <li style="border: solid 1px black;" ng-repeat="(index,tab) in Tabs" data-as-sortable-item ng-class="tab.active ? 'active' : ''">
+                    <a href="" ng-click="select(tab)" class="ng-binding" data-as-sortable-item-handle style="float: left; margin: 0; padding: 0;">
+                        {{tab.title}}&nbsp;
+                    </a>
+                    <button style="float: right; margin: 0px; padding: 0 3px;" ng-click="closeTab(index)" class="btn-danger">X</button>
+                </li>
+            </ul>
+            <!--<div class="tab-content" style="width: 100%; padding: 0;">
+                <div class="tab-pane" ng-repeat="(index,tab) in GroupDetails" ng-class="tab.active ? 'active' : ''">
+                    <table width="100%" ">
+                        <tr>
+                            <td rowspan="2" style="vertical-align: top; border: solid 1px black;">
+                                <p style="padding: 0; margin: 0; text-align: center; background-color: #7c7155; color: white;">Group Info</p>
+                                <table width="100%" style="overflow-y: auto; display: block;">
+                                    <tbody>
+                                        <tr>
+                                            <td>Group Number:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.PickGroupNumber}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Group Name:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.PickGroupName}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Group Type:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.PickGroupType}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Create User:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.CreateUser}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Create Date:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.CreateDate}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Release Date:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.ReleaseDate}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Recent Status:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.RecentStatus}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Containers Expected:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.ContainersExpected}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Containers Containerized:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.ContainersContainerized}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Containers Picked:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.ContainersPicked}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Containers Packing:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.ContainersPacking}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Containers Packed:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.ContainersPacked}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Containers Sorting:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.ContainersSorting}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Containers Sorted:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.ContainersSorted}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Containers Loading:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.ContainersLoading}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Containers Loaded:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.ContainersLoaded}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Containers Closed:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.ContainersClosed}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Containers Shipped:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.ContainersShipped}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ContainersCancelled:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.ContainersCancelled}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Containers Backordered:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.ContainersBackordered}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Release Instructions:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.ReleaseInstructions}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Comment:&nbsp;</td>
+                                            <td>{{tab.content.PickGroupDetails.Comment}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td width="5"></td>
+                            <td style="vertical-align: top; width: 50%; border: solid 1px black;">
+                                <p style="padding: 0; margin: 0; text-align: center; background-color: #7c7155; color: white;">Orders</p>
+                                <table width="400" style="overflow: auto; display: block;">
+                                    <thead>
+                                        <tr>
+                                            <th ng-click="sort('PickGroupID');" style="cursor: pointer; white-space: nowrap;">&nbsp;Group Id&nbsp;<i ng-class="getSortClass('GroupID')" style="display: inline-block;"></i></th>
+                                            <th ng-click="sort('ContainerID');" style="cursor: pointer; white-space: nowrap;">&nbsp;Container Id&nbsp;<i ng-class="getSortClass('ContainerID')" style="display: inline-block;"></i></th>
+                                            <th ng-click="sort('OrderHeaderID');" style="cursor: pointer; white-space: nowrap;">&nbsp;Order Header Id&nbsp;<i ng-class="getSortClass('OrderHeaderID')" style="display: inline-block;"></i></th>
+                                            <th ng-click="sort('CartonNumber');" style="cursor: pointer; white-space: nowrap;">&nbsp;Carton Number&nbsp;<i ng-class="getSortClass('CartonNumber')" style="display: inline-block;"></i></th>
+                                            <th ng-click="sort('Status');" style="cursor: pointer; white-space: nowrap;">&nbsp;Status&nbsp;<i ng-class="getSortClass('Status')" style="display: inline-block;"></i></th>
+                                            <th ng-click="sort('ShippingContainer');" style="cursor: pointer; white-space: nowrap;">&nbsp;Shipping Container&nbsp;<i ng-class="getSortClass('ShippingContainer')" style="display: inline-block;"></i></th>
+                                            <th ng-click="sort('TrackingNumber');" style="cursor: pointer; white-space: nowrap;">&nbsp;Tracking Number&nbsp;<i ng-class="getSortClass('TrackingNumber')" style="display: inline-block;"></i></th>
+                                            <th ng-click="sort('LastActivity');" style="cursor: pointer; white-space: nowrap;">&nbsp;Last Activity&nbsp;<i ng-class="getSortClass('LastActivity')" style="display: inline-block;"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="container in tab.content.PickGroupContainerDetails | orderBy:orderByField:reverseSort" ng-class-odd="'row-odd'" ng-class-even="'row-even'">
+                                            <td>&nbsp;{{container.PickGroupID}}</td>
+                                            <td>&nbsp;{{container.ContainerID}}</td>
+                                            <td>&nbsp;{{container.OrderHeaderID}}</td>
+                                            <td>&nbsp;{{container.CartonNumber}}</td>
+                                            <td>&nbsp;{{container.Status}}</td>
+                                            <td>&nbsp;{{container.ShippingContainer}}</td>
+                                            <td>&nbsp;{{container.TrackingNumber}}</td>
+                                            <td>&nbsp;{{container.LastActivity}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="5"></td>
+                            <td style="vertical-align: top; width: 50%; border: solid 1px black;">
+                                <p style="padding: 0; margin: 0; text-align: center; background-color: #7c7155; color: white;">Details</p>
+                                <table width="400" style="overflow: auto; display: block;">
+                                    <thead>
+                                        <tr>
+                                            <th ng-click="sort('ItemMasterID');" style="cursor: pointer; white-space: nowrap;">&nbsp;Item Master Id&nbsp;<i ng-class="getSortClass('ItemMasterID')" style="display: inline-block;"></i></th>
+                                            <th ng-click="sort('Sku');" style="cursor: pointer; white-space: nowrap;">&nbsp;SKU&nbsp;<i ng-class="getSortClass('Sku')" style="display: inline-block;"></i></th>
+                                            <th ng-click="sort('Description');" style="cursor: pointer; white-space: nowrap;">&nbsp;Description&nbsp;<i ng-class="getSortClass('Description')" style="display: inline-block;"></i></th>
+                                            <th ng-click="sort('Status');" style="cursor: pointer; white-space: nowrap;">&nbsp;Division&nbsp;<i ng-class="getSortClass('Status')" style="display: inline-block;"></i></th>
+                                            <th ng-click="sort('QtyRequired');" style="cursor: pointer; white-space: nowrap;">&nbsp;Qty Required&nbsp;<i ng-class="getSortClass('QtyRequired')" style="display: inline-block;"></i></th>
+                                            <th ng-click="sort('QtyPicked');" style="cursor: pointer; white-space: nowrap;">&nbsp;Qty Picked&nbsp;<i ng-class="getSortClass('QtyPicked')" style="display: inline-block;"></i></th>
+                                            <th ng-click="sort('QtyPacked');" style="cursor: pointer; white-space: nowrap;">&nbsp;Qty Packed&nbsp;<i ng-class="getSortClass('QtyPacked')" style="display: inline-block;"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="sku in tab.content.PickGroupSkuDetails | orderBy:orderByField:reverseSort" ng-class-odd="'row-odd'" ng-class-even="'row-even'">
+                                            <td style="white-space: nowrap;">&nbsp;{{sku.ItemMasterID}}</td>
+                                            <td style="white-space: nowrap;">&nbsp;{{sku.ContainerID}}</td>
+                                            <td style="white-space: nowrap;">&nbsp;{{sku.Sku}}</td>
+                                            <td style="white-space: nowrap;">&nbsp;{{sku.Description}}</td>
+                                            <td style="white-space: nowrap;">&nbsp;{{sku.QtyRequired}}</td>
+                                            <td style="white-space: nowrap;">&nbsp;{{sku.QtyPicked}}</td>
+                                            <td style="white-space: nowrap;">&nbsp;{{sku.QtyPacked}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>-->
+        </div>
+    </div>
+</div>

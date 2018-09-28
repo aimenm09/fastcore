@@ -1,0 +1,123 @@
+﻿<div>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+            <button id="navButton" ng-if="userData.isUserLoggedIn" type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" ng-click="navBarToggle();">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="active" style="text-decoration: none;  float: left; height: 60px; padding: 3px 3px; font-size: 22px; line-height: 20px; cursor: default">
+                <img src="Content/images/invata-header-logo2.png" />&nbsp;<span class="hidden-xs"><i>Fast</i>Trak Web</span>
+            </a>
+        </div>
+        <div id="div" class="main-navbar collapse navbar-collapse">
+            <!--<ul ng-if="!userData.isUserLoggedIn" class="nav navbar-nav navbar-right" style="cursor: pointer;">
+                <li><a href="#/login/">Login</a></li>
+            </ul>-->
+            <!--<div ng-if="userData.isUserLoggedIn" style="margin-right:4em;">-->
+            <div style="margin-right:4em;">
+                <ul class="nav navbar-nav navbar-right" style="cursor: pointer;">
+                    <li class="dropdown" ng-class="getClass(['/replenishment'])">
+                        <a>{{translate('Inbound')}}</a>
+                        <ul class="dropdown-menu">
+                            <li><a ng-click="loadWorkflow('replenishment')">Replenishment Transaction</a></li>
+                            <li><a href="#/replenishment/">{{translate('ReplenishmentMonitor')}}</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" ng-class="getClass(['/check','/whereIs'])">
+                        <a>{{translate('Inventory')}}</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#/check/">{{translate('CheckTransaction')}}</a></li>
+                            <li><a href="#/whereIs/">{{translate('WhereIsTransaction')}}</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" ng-class="getClass(['/groups','/orders','/groupOrders','/groupRelease'])">
+                        <a>{{translate('Outbound')}}</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#/groups/">{{translate('GroupMonitor')}}</a></li>
+                            <li><a href="#/orders/">{{translate('OrderMonitor')}}</a></li>
+                            <li><a href="#/groupOrders/">{{translate('GroupOrders')}}</a></li>
+                            <li><a href="#/groupRelease/">{{translate('GroupRelease')}}</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" ng-class="getClass(['/routing'])">
+                        <a>{{translate('Controllers')}}</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#/routing/">{{translate('RouteController')}}</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" ng-class="getClass(['/itemmaster','/unitofmeasure','/users','/permissions','/permissiongroups'])">
+                        <a>{{translate('Utilities')}}</a>
+                        <ul class="dropdown-menu">
+                            <li ng-if="userData.isUserInRole('ItemMasters')"><a href="#/itemmaster/">{{translate('ItemMaster')}}</a></li>
+                            <li><a href="#/unitofmeasure/">{{translate('UnitOfMeasure')}}</a></li>
+                            <li ng-if="userData.isUserInRole('Admin.Users') || userData.isUserInRole('Admin.Permissions') || userData.isUserInRole('Admin.Groups')" class="dropdown-submenu">
+                                <a href="#" style="width:120px;">{{translate('UserManagement')}}</a>
+                                <ul class="dropdown-menu" style="border-top: solid 1px lightgray; margin-top: 0; border-radius: 0;">
+                                    <li ng-if="userData.isUserInRole('Admin.Users')"><a href="#/users">{{translate('spa.users.users.Users')}}</a></li>
+                                    <li ng-if="userData.isUserInRole('Admin.Permissions')"><a href="#/permissions">{{translate('Permissions')}}</a></li>
+                                    <li ng-if="userData.isUserInRole('Admin.Groups')"><a href="#/permissiongroups">{{translate('PermissionGroups')}}</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-submenu">
+                                <a href="#/locations">{{translate('Locations')}}</a>
+                                <ul class="dropdown-menu" style="border-top: solid 1px lightgray; margin-top: 0; border-radius: 0;">
+                                    <li class="dropdown-submenu">
+                                        <a href="#" style="width: 65px">{{translate('Areas')}}</a>
+                                        <ul class="dropdown-menu" style="border-top: solid 1px lightgray; margin-top: 0; border-radius: 0;">
+                                            <li><a href="#">{{translate('Inventory')}}</a></li>
+                                            <li><a href="#">{{translate('Staging')}}</a></li>
+                                            <li><a href="#">{{translate('Transit')}}</a></li>
+                                            <li><a href="#">{{translate('Bin')}}</a></li>
+                                            <li><a href="#">{{translate('Carts')}}</a></li>
+                                            <li><a href="#">{{translate('ResearchPD')}}</a></li>
+                                            <li><a href="#">{{translate('PutWalls')}}</a></li>
+                                            <li><a href="#">{{translate('PutWallsBays')}}</a></li>
+                                            <li><a href="#">{{translate('PutWallsLocations')}}</a></li>
+                                            <li><a href="#">{{translate('UnitSorter')}}</a></li>
+                                            <li><a href="#">{{translate('UnitSorterChutes')}}</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown-submenu">
+                                        <a href="#" style="width: 65px">{{translate('Zones')}}</a>
+                                        <ul class="dropdown-menu" style="border-top: solid 1px lightgray; margin-top: 0; border-radius: 0;">
+                                            <li><a href="#">{{translate('Calculate')}}</a></li>
+                                            <li><a href="#">{{translate('Location')}}</a></li>
+                                            <li><a href="#">{{translate('Sequences')}}</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="#/stations/">{{translate('Stations')}}</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a>Invata BI</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#/dashboards/">Dashboards</a></li>
+                            <li><a href="#/dashboards/configure/">Configure</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--<img src="Content/images/Headings-Template-small5.png" style="height: 20px; width: 100%" />-->
+    </div>
+    <div ng-if="userData.isUserLoggedIn" class="navbar navbar-default navbar-fixed-top2">
+        <ul class="nav navbar-nav navbar-right cursor-pointer pr-10">
+            <li class="dropdown pull-left">
+                <a><span class="hiden-text-xs">{{stationData.StationName}}</span><i class="fa fa-laptop fa-fw"></i></a>
+                <ul class="dropdown-menu mr-15">
+                    <li><a ng-click="switchStation();">{{translate('SwitchStation')}}</a></li>
+                </ul>
+            </li>
+            <li class="dropdown pull-left">
+                <a><span class="hiden-text-xs">{{username}}</span><i class="border-icon fa fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu mr-15">
+                    <li><a ng-click="logout();">{{translate('Logout')}}</a></li>
+                    <li><a href="#/changepassword">{{translate('ChangePassword')}}</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>

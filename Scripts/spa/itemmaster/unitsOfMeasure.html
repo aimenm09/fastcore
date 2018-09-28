@@ -1,0 +1,96 @@
+﻿<div class="panel panel-primary" style="height: 472px;">
+    <div class="panel-heading">
+        Units of Measure for Item Master ID {{status.ItemMasterId}}
+    </div>
+    <div style="margin-top: 5px;">
+        <table id="tblMain">
+            <tr>
+                <!-- Main Window -->
+                <td width="5">&nbsp;</td>
+                <td style="vertical-align: top; border: solid 1px black;">
+                    <p class="heading-table">&nbsp;{{localTranslate('UnitsOfMeasure', false)}}</p>
+                    <div style="width: 582px; overflow-x: auto;">
+                        <table ng-if="loadingUnits" class="loading" height="100%" width="100%" style="border-bottom: 1px solid black;">
+                            <tr><td style="text-align: center;"><i class="fa fa-refresh fa-5x fa-spin"></i></td></tr>
+                            <tr><td style="text-align: center;"><label class="label label-primary">{{localTranslate('Loading')}} {{localTranslate('UnitsOfMeasure', false)}}...</label></td></tr>
+                        </table>
+                        <table ng-if="!loadingUnits" width="100%" id="tblUnits2" class="scrollTable" style="border: none;">
+                            <thead>
+                                <tr>
+                                    <th id="UnitOfMeasureTypeID" style="padding: 0 5px; min-width: 185px; max-width: 185px; cursor: pointer;">&nbsp;{{localTranslate('UnitOfMeasureTypeID')}}&nbsp;<i ng-class="getSortClass('UnitOfMeasureTypeID')" style="display: inline-block;"></i></th>
+                                    <th id="Qty" style="padding: 0 5px; min-width: 100px; max-width: 100px; cursor: pointer;">&nbsp;{{localTranslate('Qty')}}&nbsp;<i ng-class="getSortClass('Qty')" style="display: inline-block;"></i></th>
+                                    <th id="Length" style="padding: 0 5px; min-width: 100px; max-width: 100px; cursor: pointer;">&nbsp;{{localTranslate('Length')}}&nbsp;<i ng-class="getSortClass('Length')" style="display: inline-block;"></i></th>
+                                    <th id="Width" style="padding: 0 5px; min-width: 100px; max-width: 100px; cursor: pointer;">&nbsp;{{localTranslate('Width')}}&nbsp;<i ng-class="getSortClass('Width')" style="display: inline-block;"></i></th>
+                                    <th id="Height" style="padding: 0 5px; min-width: 100px; max-width: 100px; cursor: pointer;">&nbsp;{{localTranslate('Height')}}&nbsp;<i ng-class="getSortClass('Height')" style="display: inline-block;"></i></th>
+                                    <th id="Weight" style="padding: 0 5px; min-width: 100px; max-width: 100px; cursor: pointer;">&nbsp;{{localTranslate('Weight')}}&nbsp;<i ng-class="getSortClass('Weight')" style="display: inline-block;"></i></th>
+                                    <th width="{{fillWidth}}" style="background-color: red;">&nbsp;</th>
+                                    <th id="padCol" style="width: 17px; max-width: 17px; min-width: 17px; display: none;"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="units" style="height: 310px;">
+                                <tr ng-repeat="item in units | orderBy:orderByField:reverseSort" ng-include="getTemplate(item)"
+                                    ng-class-odd="'row-odd'" ng-class-even="'row-even'"></tr>
+                            </tbody>
+                        </table>
+                        <div class="units" id="dvGrips2" style="left: 7px; top: 68px; height: 332px; width: 584px; overflow-x: hidden; z-index: 100; position: absolute;"></div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <table style="margin: 5px;">
+            <tr>
+                <td>
+                    <button ng-click="save()" ng-hide="!isEditing">{{localTranslate('Save', true)}}</button>
+                </td>
+                <td width="5px"></td>
+                <td>
+                    <button ng-click="cancel()" ng-hide="!isEditing">{{localTranslate('Cancel', true)}}</button>
+                </td>
+                <td width="5px"></td>
+            </tr>
+        </table>        <div class="panel-footer clearfix">
+            <div class="pull-right">
+                <button type="button" class="btn btn-primary" ng-click="ok()">{{localTranslate('OK', true)}}</button>
+                <button type="button" class="btn btn-primary" ng-click="cancel()">{{localTranslate('Cancel', true)}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav id="context-menu" class="context-menu units" style="width: 200px; z-index: 2000;">
+    <ul class="context-menu__items">
+        <li class="context-menu__item">
+            <a ng-click="menuSelection('New')" class="context-menu__link active" data-action="View"><i class="fa fa-tasks"></i> Add New</a>
+        </li>
+        <li><hr style="height: 5px; padding: 0; margin: 0" /></li>
+        <li class="context-menu__item">
+            <a ng-click="menuSelection('Edit')" ng-class="getGroupMenuClass('edit')" class="context-menu__link active" data-action="Edit"><i class="fa fa-random"></i> Edit Item</a>
+        </li>
+        <li class="context-menu__item">
+            <a ng-click="menuSelection('Delete')" ng-class="getGroupMenuClass('delete')" class="context-menu__link active" data-action="Delete"><i class="fa fa-remove"></i> Delete Item</a>
+        </li>
+    </ul>
+</nav>
+
+<script type="text/ng-template" id="display">
+    <td style="padding: 0 5px; min-width: 185px; max-width: 185px;">{{item.SelectedType.Name}}</td>
+    <td style="padding: 0 5px; min-width: 100px; max-width: 100px;">{{item.Qty}}</td>
+    <td style="padding: 0 5px; min-width: 100px; max-width: 100px;">{{item.Length}}</td>
+    <td style="padding: 0 5px; min-width: 100px; max-width: 100px;">{{item.Width}}</td>
+    <td style="padding: 0 5px; min-width: 100px; max-width: 100px;">{{item.Height}}</td>
+    <td style="padding: 0 5px; min-width: 100px; max-width: 100px;">{{item.Weight}}</td>
+    <td width="{{fillWidth}}">&nbsp;</td>
+</script>
+
+<script type="text/ng-template" id="edit">
+    <td style="padding: 0 5px; min-width: 185px; max-width: 185px;">
+        <select class="input" ng-model="editItem['SelectedType']" ng-options="type.Name for type in unitTypes track by type.UnitOfMeasureTypeID"
+                style="color: black; z-index: 200; position: relative;"></select>
+    </td>
+    <td style="padding: 0 5px; min-width: 100px; max-width: 100px;"><input class="input" type="text" ng-model="editItem['Qty']" style="width: 100%; z-index: 200; position: relative;" /></td>
+    <td style="padding: 0 5px; min-width: 100px; max-width: 100px;"><input class="input" type="text" ng-model="editItem['Length']" style="width: 100%; z-index: 200; position: relative;" /></td>
+    <td style="padding: 0 5px; min-width: 100px; max-width: 100px;"><input class="input" type="text" ng-model="editItem['Width']" style="width: 100%; z-index: 200; position: relative;" /></td>
+    <td style="padding: 0 5px; min-width: 100px; max-width: 100px;"><input class="input" type="text" ng-model="editItem['Height']" style="width: 100%; z-index: 200; position: relative;" /></td>
+    <td style="padding: 0 5px; min-width: 100px; max-width: 100px;"><input class="input" type="text" ng-model="editItem['Weight']" style="width: 100%; z-index: 200; position: relative;" /></td>
+    <td width="{{fillWidth}}">&nbsp;</td>
+</script>

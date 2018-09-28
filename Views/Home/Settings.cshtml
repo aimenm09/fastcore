@@ -1,0 +1,10 @@
+﻿@model FastTrakWebUI.Models.SettingsViewModel
+
+@{
+    Layout = null;
+}
+(function (app) {
+    'use strict';
+
+    app.constant('settings', @Html.Raw(Model.SettingsJson));
+})(angular.module('@Model.AngularModuleName'));

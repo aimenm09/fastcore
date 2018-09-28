@@ -1,0 +1,116 @@
+﻿<div class="row">
+    <div class="panel-heading clearfix">
+        <h4 class="panel-title pull-left">{{localTranslate('WhereIsTransaction', false)}}</h4>
+    </div>
+    <div id="content">
+        <div class="flex-column">
+            <div>
+                {{localTranslate('ScanASKU')}}:
+            </div>
+            <div class="flex-row highlight hide-margin-xs" style="padding: 5px 0; margin-left: 100px;">
+                <span style="height: 24px;">{{localTranslate('Scan')}}:</span>
+                <input ng-disabled="Details.length > 0" id="Sku" autofocus="" class="form-control" autocomplete="off" style="margin-left: 5px; height: 24px; width: 300px;" ng-model="Scanned.Sku">
+            </div>
+        </div>
+
+        <div ng-if="Details.length == 0" class="flex-column"></div>
+        <div ng-if="Details.length > 0" class="flex-column pt-5">
+            <div style="height: 1px; background-color: black; margin-bottom: 5px;"></div>
+            <table>
+                <tr>
+                    <td style="padding-right: 5px; width: 25px; white-space: nowrap;">{{localTranslate('SKU')}}:</td>
+                    <td style="text-align: left;">{{Sku}}</td>
+                </tr>
+            </table>
+            <p class="heading-table">&nbsp;{{localTranslate('Details')}}</p>
+            <table id="Details" class="scrollTable" style="height: 240px;">
+                <thead>
+                    <tr>
+                        <th id="expander" style="min-width: 20px; max-width: 20px"></th>
+                        <th id="colDetails{{column.DataId}}" ng-repeat="column in columnNames" ng-attr-style="{{column.Style}}">{{localTranslate(column.Caption)}}</th>
+                        <th width="{{fillWidths['Details']}}">&nbsp;</th>
+                        <th id="padColDetails" style="border: none; width: 17px; max-width: 17px; min-width: 17px; display: none;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat-start="item in Details" style=" vertical-align: top;"
+                        ng-class-odd="{'row-odd': item.LocationID != selectedItemNumber}"
+                        ng-class-even="{'row-even': item.LocationID != selectedItemNumber}"
+                        ng-class="{rowSelected: item.LocationID == selectedItemNumber}">
+                        <td style="min-width: 20px;">
+                            &nbsp;<a ng-click="getDetails(item)" href="" style="z-index: 200; position: relative; text-decoration: none;">
+                                <i ng-if="!item.visible" class="fa fa-caret-right"></i>
+                                <i ng-if="item.visible" class="fa fa-caret-down"></i>
+                            </a>
+                        </td>
+                        <td ng-repeat="column in columnNames" title="{{localTranslate(item[column.Caption])}}" id="{{column.DataId}}" ng-attr-style="{{column.Style}}">
+                            {{item[column.DataId]}}
+                        </td>
+                        <td width="{{fillWidths['Details']}}">&nbsp;</td>
+                    </tr>
+                    <tr ng-if="item.visible" ng-repeat-end="" ng-repeat="detail in item.Details"
+                        ng-class-odd="{'row-odd': detail.Index != selectedItemNumber}"
+                        ng-class-even="{'row-even': detail.Index != selectedItemNumber}"
+                        ng-class="{rowSelected: detail.Index == selectedItemNumber}">
+                        <td style="min-width: 20px; max-width: 20px;"></td>
+                        <td ng-repeat="column in columnNames" title="{{localTranslate(item[column.Caption])}}" id="{{column.DataId}}" ng-attr-style="{{column.Style}}">
+                            {{detail[column.DataId]}}
+                        </td>
+                        <td width="{{fillWidths['Details']}}">&nbsp;</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="flex-row pt-5" style="overflow-x:auto;">
+                <div class="border-1">
+                    <p  class="heading-table text-center">{{localTranslate('FastTrakInventory')}}</p>
+                    <table style="width: 300px;">
+                        <tr ng-repeat="item in Inventory" style=" vertical-align: top;">
+                            <td ng-repeat="column in inventoryFields" title="{{localTranslate(item[column.Caption])}}" id="{{column.DataId}}" ng-attr-style="{{column.Style}}">
+                                {{item[column.DataId]}}
+                            </td>
+                            <td width="{{fillWidths['Details']}}">&nbsp;</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="border-1 ml-10">
+                    <p class="heading-table text-center">{{localTranslate('FacilityAllocated')}}</p>
+                    <table style="width: 300px;">
+                        <tr ng-repeat="item in Allocated" style=" vertical-align: top;">
+                            <td ng-repeat="column in allocatedFields" title="{{localTranslate(item[column.Caption])}}" id="{{column.DataId}}" ng-attr-style="{{column.Style}}">
+                                {{item[column.DataId]}}
+                            </td>
+                            <td width="{{fillWidths['Details']}}">&nbsp;</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="border-1 ml-10">
+                    <p class="heading-table text-center">{{localTranslate('InventoryStatus')}}</p>
+                    <table style="width: 300px;">
+                        <tr ng-repeat="item in Status" style=" vertical-align: top;">
+                            <td ng-repeat="column in statusFields" title="{{localTranslate(item[column.Caption])}}" id="{{column.DataId}}" ng-attr-style="{{column.Style}}">
+                                {{item[column.DataId]}}
+                            </td>
+                            <td width="{{fillWidths['Details']}}">&nbsp;</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-column mt-5" style="height: 30px;">
+            <div class="flex-row" style="height: 30px;">
+                <div ng-show="Details.length > 0" class="flex-row">
+                    <input style="width: 200px; margin-right: 5px;" ng-model="Scanned.Search" />
+                    <button ng-disabled="Scanned.Search.length == 0" ng-click="search()">{{localTranslate('Search')}}</button>
+                </div>
+                <div class="flex-row-reverse">
+                    <button ng-disabled="Details.length == 0" ng-click="reset()" class="ml-5">{{localTranslate('Reset')}}</button>
+                    <button ng-disabled="Scanned.Sku.length == 0" ng-click="process()">{{localTranslate('Process')}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

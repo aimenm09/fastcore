@@ -1,0 +1,78 @@
+﻿<div class="panel login-panel panel-primary">
+    <div class="panel-heading page-title">
+        {{localTranslate('LogOnTo')}} <i>Fast</i>Trak {{localTranslate('WebAdministration')}}
+    </div>
+    <form role="form" novalidate angular-validator name="loginForm" angular-validator-submit="login()">
+        <div class="panel-body">
+            <table>
+                <tr>
+                    <td rowspan="13">
+                        <img src="Content/images/lock2.png" class="visible-hidden"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="2" width="350">
+                        <div class="visible-hidden"> {{localTranslate('EnterCredentials')}} FastTrak {{localTranslate('WebAdministration')}}.</div>
+                    </td>
+                </tr>
+                <tr style="height: 10px;"></tr>
+                <tr>
+                    <td></td>
+                    <td style="text-align: right; white-space: nowrap;">{{localTranslate('UserName')}}:&nbsp;</td>
+                    <td>
+                        <input type="text" id="userName" name="userName" class="form-control" ng-model="user.userName" placeholder="{{localTranslate('UserName')}}"
+                               autofocus="" validate-on="blur" required required-message="'{{localTranslate('UserName')}} {{localTranslate('IsRequired', true)}}'">
+                    </td>
+                </tr>
+                <tr style="height: 10px;"></tr>
+                <tr>
+                    <td></td>
+                    <td style="text-align: right; white-space: nowrap;">{{localTranslate('Password')}}:&nbsp;</td>
+                    <td>
+                        <input type="password" id="password" name="password" class="form-control" ng-model="user.password" placeholder="{{localTranslate('Password')}}"
+                               validate-on="blur" required required-message="'{{localTranslate('Password')}} {{localTranslate('IsRequired', true)}}'">
+                    </td>
+                </tr>
+                <tr style="height: 10px;"></tr>
+                <tr>
+                    <td></td>
+                    <td style="text-align: right; white-space: nowrap;">{{localTranslate('Station')}}:&nbsp;</td>
+                    <td style="display: inline-block;">
+                        <select data-ng-options="s.DisplayName for s in stations track by s.DeviceIdentifier" data-ng-model="selectedStation" class="pull-right" style="height: 20px; width: 200px;"></select>
+                    </td>
+                </tr>
+                <tr style="height: 10px;"></tr>
+                <tr>
+                    <td></td>
+                    <td style="text-align: right; white-space: nowrap;">Language:&nbsp;</td>
+                    <td style="display: inline-block;">
+                        <select ng-model="locale" ng-selected="localeChanged()" class="pull-right" style="height: 20px; width: 100px;">
+                            <option value="en">English</option>
+                            <option value="es-mx">Spanish</option>
+                            <option value="de">German</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr style="height: 10px;"></tr>
+                <!--<tr>
+                    <td></td>
+                    <td style="text-align: right; white-space: nowrap;">Error Level:&nbsp;</td>
+                    <td style="display: inline-block;">
+                        <select ng-model="errorLevel" ng-selected="errorLevelChanged()" class="pull-right" style="height: 20px; width: 100px;">
+                            <option value="0">Errors</option>
+                            <option value="1">Informational</option>
+                            <option value="2">All</option>
+                        </select>
+                    </td>
+                </tr>-->
+            </table>
+        </div>
+        <div class="panel-footer clearfix">
+            <div class="pull-right">
+                <button type="button" class="btn btn-primary" ng-click="cancel()">{{localTranslate('Cancel', true)}}</button>
+                <button type="submit" class="btn btn-primary">Continue</button>
+            </div>
+        </div>
+    </form>
+</div>

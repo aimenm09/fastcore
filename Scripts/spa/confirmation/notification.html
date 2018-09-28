@@ -1,0 +1,22 @@
+﻿<div class="panel panel-primary">
+    <div class="panel-heading">
+        FastTrak {{translate('Administration')}}
+    </div>
+    <div class="panel-body">
+        <table>
+            <tr>
+                <td rowspan="2" style="vertical-align: top;"><img src="{{Image}}" width="40" /></td>
+                <td><label class="control-label" style="margin-left: 10px;">{{Text1}}</label></td>
+            </tr>
+            <tr>
+                <td><label class="control-label" style="margin-left: 10px;">{{Text2}}</label></td>
+            </tr>
+        </table>
+    </div>
+    <div class="panel-footer clearfix">
+        <div class="pull-right">
+            <button ng-if="showOk()" type="button" class="btn btn-primary" ng-click="ok()">OK</button>
+            <button ng-if="showCancel()" type="button" class="btn btn-primary" ng-click="cancel()">Cancel</button>
+        </div>
+    </div>
+</div>

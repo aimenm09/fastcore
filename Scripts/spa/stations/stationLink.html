@@ -1,0 +1,27 @@
+﻿<div class="panel panel-primary">
+    <div class="panel-heading">
+        {{localTranslate('LinkStation')}}
+    </div>
+    <form role="form" novalidate angular-validator name="linkStationForm" angular-validator-submit="linkStation()">
+        <div class="panel-body">
+            <div class="">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="control-label">{{localTranslate('EnterLinkCode')}}:</label>
+                            <input autofocus="" type="text" style="margin-top: 5px; width: 200px;" class="form-control"
+                               required required-message="{{localTranslate('RequiredLinkCode')}}" ng-model="StationLink.LinkCode"
+                               name="linkCode" id="linkCode" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer clearfix">
+            <div class="pull-right">
+                <button type="submit" class="btn btn-primary">{{localTranslate('Link')}}</button>
+                <button type="button" class="btn btn-primary" ng-click="cancel()">{{localTranslate('Cancel', true)}}</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,139 @@
+﻿.heading-table {
+    padding: 0;
+    margin: 0;
+    background-color: #4a6985;
+    color: #ffffff;
+    border-bottom: 2px solid #f48c2c;
+}
+
+.border-1 {
+    border: 1px solid #000000;
+}
+.border-0{
+    border:none;
+}
+.navbar{
+    margin-bottom:0;
+}
+.panel-heading {
+    background-color: #fff;
+    border-radius: 0;
+    padding: 10px 0;
+}
+
+.panel-title {
+    color: #666666;
+    font-size: 23.15pt;
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    color: #555;
+    background-color: #e1e1e1;
+}
+.main-navbar .dropdown.active > a:before, .main-navbar .dropdown.active > a:after {
+    content: "";
+    height: 0;
+    width: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #e61616;
+    position: absolute;
+    bottom: -3px;
+    z-index: 99999999999;
+}
+
+.main-navbar .dropdown.active > a:before {
+    left: 45%;
+    border-bottom-color: #f48c2c;
+    border-width: 11px;
+}
+
+.main-navbar .dropdown.active > a:after {
+    left: 47.6%;
+    border-bottom-color: #ffffff;
+    border-width: 8px;
+}
+
+@media (max-width: 768px) {
+    .main-navbar .dropdown.active > a:before, .main-navbar .dropdown.active > a:after {
+        display: none !important;
+    }
+    .main-navbar .dropdown.active > a {
+        color: #f48c2c !important;
+    }  
+
+}
+
+.border-icon {
+    border-radius: 100%;
+    border: 1px solid #ddd;
+    padding: 3px 5px 0 5px;
+    height: 23px;
+    width: 23px;
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+.col-md-3 {
+    background: pink;
+    display: flex;
+    flex-direction: column;
+}
+.flex-row {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+}
+.flex-row-reverse {
+    flex: 1;
+    display: flex;
+    flex-direction: row-reverse;
+}
+.flex-column{
+    display:flex;
+    flex-direction:column;
+}
+.flex-column-1 {
+    flex:1;
+    display: flex;
+    flex-direction: column;
+}
+.pt-5{
+    padding-top:5px;
+}
+.pl-5{
+    padding-left:5px;
+}
+.pr-10{
+    padding-right:10px;
+}
+.ml-5{
+    margin-left:5px;
+}
+.mr-5 {
+    margin-right: 5px;
+}
+.ml-10{
+    margin-left:10px;
+}
+.mr-10 {
+    margin-right: 10px;
+}
+.mr-15{
+    margin-right:15px;
+}
+.mt-5{
+    margin-top:5px;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+@media (max-width: 1200px) {
+    .hide-margin-xs {
+        margin: 0 !important;
+    }
+    .hiden-text-xs{
+        display:none !important;
+    }
+}

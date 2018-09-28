@@ -1,0 +1,66 @@
+﻿<div class="row">
+    <div class="panel-heading clearfix">
+        <h4 class="panel-title pull-left">{{localTranslate('GroupInfo')}}</h4>
+    </div>
+    <div id="dvMain" style="display: inline-block; overflow-x: hidden; overflow-y: hidden; width: 300px; max-width: 300px; height: 20px;">
+        <div ng-if="!tab.Hidden" ng-repeat="tab in tabs" style="display: inline-block; border: solid 1px black; height: 20px;">
+            <a href="" style="float: left; margin: 0; padding: 0 3px 0 3px; height: 18px;">
+                {{tab.Name}}
+            </a>
+            <button style="float: right; height: 18px; line-height: normal; margin: 0; padding: 0; background-color: lightgray" ng-click="closeTab(index)">X</button>
+        </div>
+    </div>
+    <div style="display: inline-block;">
+        <select ng-options="tab as tab.Name for tab in tabs track by tab"
+                ng-model="selectedTab" style="display: inline-block; height: 25px;"></select>
+        <button ng-click="right()" ng-disabled="$scope.index == 0" style="display: inline-block; float: right;">></button>
+        <button ng-click="left()" ng-disabled="$scope.index == (tabs.length - visibleCount);" style="display: inline-block; float: right;"><</button>
+    </div>
+</div>
+<!--<form role="form" novalidate angular-validator name="loginForm" angular-validator-submit="ok()">
+    <table style="min-height: 65px; margin: 5px;">
+        <tr>
+            <td style="text-align: right; white-space: nowrap;">User Name:&nbsp;</td>
+            <td>
+                <input name="userName" class="form-control" ng-model="user.userName" placeholder="User Name"
+                       autofocus="" validate-on="blur" required required-message="'User name is required'">
+            </td>
+        </tr>
+        <tr>
+            <td style="white-space: nowrap;"><b>Rule Name:&nbsp;</b></td>
+            <td>
+                <input class="form-control" ng-model="data.RuleName" autofocus="" tabindex="1"
+                       placeholder="Rule Name" style="width: 250px; height: 25px;" maxlength="255"
+                       validate-on="blur" required required-message="Rule Name is Required">
+            </td>
+            <td width="100%" style="text-align: right; padding-right: 5px;"></td>
+            <td tabindex="3"><button type="submit" style="width: 100px;">Save</button></td>
+        </tr>
+        <tr>
+            <td style="white-space: nowrap;"><b>Rule Description:&nbsp;</b></td>
+            <td>
+                <input class="form-control" style="width: 250px; height: 25px;" maxlength="255" tabindex="2"
+                       ng-model="data.Description" placeholder="Description">
+            </td>
+            <td width="100%"></td>
+            <td tabindex="4"><button style="width: 100px;" ng-click="cancel()">Cancel</button></td>
+        </tr>
+    </table>
+</form>
+<div class="row">
+    <div class="panel-heading clearfix" style="color: #fff; background-color: #7c7155">
+        <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Messages</h4>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Messages</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="msg in messages" ng-class-odd="{'row-odd'}" ng-class-even="{'row-even'}">
+                <td>{{msg.Data}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>-->

@@ -1,0 +1,64 @@
+﻿<div>
+    <div class="panel panel-primary">
+        <div class="panel-heading clearfix">
+            <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Invata Skills Group Users</h4>
+            <div class="input-group">
+                <input id="inputSearchUsers" type="search" ng-model="filterUsers" class="form-control shortInputSearch" placeholder="Filter, search users...">
+                <div class="input-group-btn">
+                    <button class="btn btn-primary" ng-click="search();"><i class="glyphicon glyphicon-search"></i></button>
+                    <button class="btn btn-primary" ng-click="clearSearch();"><i class="glyphicon glyphicon-remove-sign"></i></button>
+                </div>
+            </div>
+        </div>
+        <div ng-if="loadingUsers" class="spinner">
+            <div class="col-xs-4"></div>
+            <div class="col-xs-4">
+                <i class="fa fa-refresh fa-5x fa-spin"></i> <label class="label label-primary">Loading users...</label>
+            </div>
+            <div class="col-xs-4"></div>
+        </div>
+        <div ng-if="!loadingUsers" style="padding-left: 5px; padding-right: 5px;">
+            <table class="headerLayout" width="100%">
+                <thead>
+                    <tr>
+                        <th>Sel</th>
+                        <th>ID</th>
+                        <th>Group</th>
+                        <th>Status</th>
+                        <th>Orders</th>
+                        <th>Lines</th>
+                        <th>Units</th>
+                        <th>Containers</th>
+                        <th>SKUs</th>
+                        <th>Single Piece Orders</th>
+                        <th>FTE</th>
+                        <th>Release Instructions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="user in Users | filter:filterUsers" ng-class-odd="'row-odd'" ng-class-even="'row-even'">
+                        <td width="25">
+                            <input type="checkbox"
+                                   value="{{user.UserId}}" ng-checked="IsSelected(user);"
+                                   ng-click="toggleSelection(user)" />
+                        </td>
+                        <td>{{user.FirstName}}</td>
+                        <td>{{user.LastName}}</td>
+                        <td>{{user.Email}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div>
+        <div class="text-center">
+            <custom-pager page="{{page}}" pages-count="{{pagesCount}}" total-count="{{totalCount}}" search-func="search(page)"></custom-pager>
+        </div>
+    </div>
+    <div style="height: 50px; padding-right: 10px;">
+        <div class="pull-right">
+            <button type="button" class="btn btn-danger" ng-click="cancelAddGroupUsers()">Cancel</button>
+            <button type="button" class="btn btn-primary" ng-click="addGroupUsers()">Save</button>
+        </div>
+    </div>
+</div>

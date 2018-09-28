@@ -1,0 +1,32 @@
+﻿<div class="row">
+    <div class="panel panel-primary" style="margin: 0;">
+        <div class="panel-heading">
+            {{translate('SwitchStation')}}
+        </div>
+            <div class="panel-body">
+                <div class="">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="control-label">Select station to switch to:</label>
+                                <select data-ng-options="s.DisplayName for s in stations track by s.DeviceIdentifier" data-ng-model="selectedStation" class="pull-right" style="height: 25px; width: 200px;">
+                                    <option value="">---Please select---</option>
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer clearfix">
+                <div class="pull-left">
+                    <a href="." ng-click="hardlink()">hard link</a>
+                </div>
+                <div class="pull-right">
+                    <button type="button" class="btn btn-primary" ng-click="setSwitchStation()">{{localTranslate('spa.station.station.Switch', true)}}</button>
+                    <button type="button" class="btn btn-primary" ng-click="cancel()">{{localTranslate('Cancel', true)}}</button>
+                </div>
+            </div>
+
+    </div>
+</div>

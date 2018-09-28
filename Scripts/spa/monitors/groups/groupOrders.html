@@ -1,0 +1,340 @@
+﻿<div class="row">
+    <div class="panel-heading clearfix page-title">
+        <h4 class="panel-title pull-left" >{{localTranslate('GroupOrders')}}</h4>
+        <div ng-if="isSearching">
+            <div style="border: solid 1px black; margin-left: 200px; padding: 5px; white-space: nowrap; display: inline-block;">
+                <button class="btn btn-primary" ng-click="searchAgain()">{{localTranslate('SearchAgain', true)}}</button><span style="color: white;"> {{localTranslate('ForSearchOn', true)}} {{SearchInfo.ColumnName}} {{localTranslate('for', true)}} {{SearchInfo.SearchTerm}}</span>
+                <button style="float: right; height: 18px; line-height: normal; margin: 0; padding: 0; margin-left: 5px; background-color: lightgray; margin-top: 7.5px;" ng-click="closeSearch()">X</button>
+            </div>
+        </div>
+    </div>
+    <div id="content" style="display: flex; height: 80vh; flex-direction: column; padding-top: 5px; margin: 0; overflow: auto;">
+        <div style="flex: 1; display: flex; flex-direction: column;">
+            <span class="text-center in-page-header">&nbsp;{{localTranslate('UnselectedOrders')}}:&nbsp;{{unselected}}</span>
+            <table ng-if="loadingOrders" class="loading" style="height: 92%; width: 100%; border: 1px solid black; background-color: white; z-index: 500;">
+                <tr><td style="text-align: center;"><i class="fa fa-refresh fa-5x fa-spin"></i></td></tr>
+                <tr><td style="text-align: center;"><label class="label label-primary">{{localTranslate('Loading', true)}} {{localTranslate('Orders', true)}}...</label></td></tr>
+            </table>
+            <table id="Orders" ng-if="!loadingOrders" class="scrollTable" style="height: 100%; width: 100%;">
+                <thead>
+                    <tr>
+                        <th id="colOrders{{column.DataId}}" ng-repeat="column in orderColumnNames" ng-attr-style="{{column.Style}}">{{localTranslate(column.Caption)}}</th>
+                        <th width="{{fillWidths['Orders']}}">&nbsp;</th>
+                        <th id="padColOrders" style="border: none; width: 17px; max-width: 17px; min-width: 17px; display: none;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="order in Orders"
+                        ng-class-odd="{'row-odd': order.OrderHeaderID != selectedItemNumber}"
+                        ng-class-even="{'row-even': order.OrderHeaderID != selectedItemNumber}"
+                        ng-class="{rowSelected: order.OrderHeaderID == selectedItemNumber}">
+                        <td ng-repeat="column in orderColumnNames" ng-attr-style="{{column.Style}}">
+                            <input ng-if="column.DataType == 'Boolean'" type="checkbox" ng-checked="order[column.DataId]" onclick="return false;" style="margin: auto; display: block; height: 18px; width: 18px" />
+                            <span ng-if="column.DataType != 'Boolean'">{{order[column.DataId]}}</span>
+                        </td>
+                        <td width="{{fillWidths['Orders']}}">&nbsp;</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div ng-if="!loadingOrders" style="flex: 1;">
+                <custom-pager page="{{page}}" pages-count="{{pagesCount}}" total-count="{{totalCount}}" search-func="loadUngroupedOrders(page)"></custom-pager>
+            </div>
+        </div>
+        <div style="flex: 1; min-height: 35px; max-height: 35px;">
+            <table>
+                <tr style="font-weight: bold;">
+                    <td style="width: 50%;"></td>
+                    <td ng-click="applyRules()" style="padding: 5px;"><button style="width: 150px;">>> {{localTranslate('ApplyRules')}}</button></td>
+                    <td ng-click="addOrder()" style="padding: 5px;"><button style="width: 150px;" ng-disabled="selectedItemNumber < 0">> {{localTranslate('Add')}}</button></td>
+                    <td ng-click="removeOrder()" style="padding: 5px;"><button style="width: 150px;" ng-disabled="SelectedOrders.length == 0">< {{localTranslate('Remove')}}</button></td>
+                    <td ng-click="removeAll()" style="padding: 5px;"><button style="width: 150px;" ng-disabled="SelectedOrders.length == 0"><< {{localTranslate('RemoveAll')}}</button></td>
+                    <td style="width: 50%;"></td>
+                </tr>
+            </table>
+        </div>
+        <div style="flex: 1; display: flex; flex-direction: column;">
+            <span class="text-center in-page-header">&nbsp;{{localTranslate('SelectedOrders')}}:&nbsp;{{SelectedOrders.length}}</span>
+            <table ng-if="loadingSelectedOrders" class="loading" style="height: 92%; width: 100%; border: 1px solid black; background-color: white; z-index: 500;">
+                <tr><td style="text-align: center;"><i class="fa fa-refresh fa-5x fa-spin"></i></td></tr>
+                <tr><td style="text-align: center;"><label class="label label-primary">{{localTranslate('Loading', true)}} {{localTranslate('Orders', true)}}...</label></td></tr>
+            </table>
+            <table id="SelectedOrders" ng-if="!loadingSelectedOrders" class="scrollTable" style="height: 100%;">
+                <thead>
+                    <tr>
+                        <th id="colSelectedOrders{{column.DataId}}" ng-repeat="column in orderColumnNames" ng-attr-style="{{column.Style}}">{{localTranslate(column.Caption)}}</th>
+                        <th width="{{fillWidths['SelectedOrders']}}">&nbsp;</th>
+                        <th id="padColSelectedOrders" style="border: none; width: 17px; max-width: 17px; min-width: 17px; display: none;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="order in SelectedOrders"
+                        ng-class-odd="{'row-odd': order.OrderHeaderID != selectedOrder}"
+                        ng-class-even="{'row-even': order.OrderHeaderID != selectedOrder}"
+                        ng-class="{rowSelected: order.OrderHeaderID == selectedOrder}">
+                        <td ng-repeat="column in orderColumnNames" ng-attr-style="{{column.Style}}">
+                            <input ng-if="column.DataType == 'Boolean'" type="checkbox" ng-checked="order[column.DataId]" onclick="return false;" style="margin: auto; display: block; height: 18px; width: 18px" />
+                            <span ng-if="column.DataType != 'Boolean'">{{order[column.DataId]}}</span>
+                        </td>
+                        <td width="{{fillWidths['SelectedOrders']}}">&nbsp;</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div ng-if="!loadingSelectedOrders" style="flex: 1; min-height: 35px; max-height: 35px;">
+                <table>
+                    <tr style="font-weight: bold;">
+                        <td style="width: 50%;"></td>
+                        <td style="padding: 5px;">{{localTranslate('Lines')}}:</td>
+                        <td style="padding: 5px; min-width: 75px;">&nbsp;{{Lines}}</td>
+                        <td style="padding: 5px;">{{localTranslate('Units')}}:</td>
+                        <td style="padding: 5px; min-width: 75px;">&nbsp;{{Units}}</td>
+                        <td style="padding: 5px;">{{localTranslate('Containers')}}:</td>
+                        <td style="padding: 5px; min-width: 75px;">&nbsp;{{Containers}}</td>
+                        <td style="padding: 5px;">{{localTranslate('SKUs')}}:</td>
+                        <td style="padding: 5px; min-width: 75px;">&nbsp;{{SKUs}}</td>
+                        <td style="padding: 5px; white-space: nowrap;">{{localTranslate('SinglePieceOrders')}}:</td>
+                        <td style="padding: 5px; min-width: 75px;">&nbsp;{{SPOrders}}</td>
+                        <td style="padding: 5px;">{{localTranslate('FTE')}}:</td>
+                        <td style="padding: 5px; min-width: 75px;">&nbsp;{{FTE}}</td>
+                        <td style="width: 50%;"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div>
+            <table>
+                <tr style="font-weight: bold;">
+                    <td style="padding: 5px; white-space: nowrap;">{{localTranslate('GroupName')}}:</td>
+                    <td style="padding: 5px;"><input type="text" ng-model="groupInfo.GroupName" style="min-width: 200px; max-width: 200px;" /></td>
+                    <td style="padding: 5px; white-space: nowrap;"><button ng-click="addReleaseInstructions()">{{localTranslate('AddInstructions')}}</button></td>
+                    <td style="width: 100%;"></td>
+                    <td style="padding: 5px;"><button style="width: 100px;" ng-click="groupOrder()">{{localTranslate('OK', true)}}</button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div ng-if="displayRules" style="position: absolute; left: 0px; top: 0px; height: 100%; width: 100%; background-color: black; opacity: 0.25;">
+</div>
+
+<div ng-if="displayRules" style="position: absolute; left: 0px; top: 0px; height: 100%; width: 100%; padding: 30px 250px 50px 250px; z-index: 300;">
+    <div style="display: flex; flex-direction: row; border: 1px solid black; background-color: #7c7155;">
+        <h4 style="width: 100%; padding: 10px; margin: 0; color: white;">{{localTranslate('SelectRules')}}</h4>
+        <button style="float: right; height: 18px; line-height: normal; margin: 12px 10px; padding: 0; background-color: lightgray" ng-click="closeDialog()">X</button>
+    </div>
+    <div style="background-color: white; border: 1px solid black; border-top: 0; display: flex; flex-direction: column; height: 100%;">
+        <p class="heading-table">&nbsp;{{localTranslate('GroupOrderRules')}}</p>
+        <table ng-if="loadingRules" class="loading" style="border-bottom: 1px solid black; height: 100%; width: 100%;">
+            <tr><td style="text-align: center;"><i class="fa fa-refresh fa-5x fa-spin"></i></td></tr>
+            <tr><td style="text-align: center;"><label class="label label-primary">{{localTranslate('Loading', true)}} {{localTranslate('Rules')}}...</label></td></tr>
+        </table>
+        <table id="Rules" ng-if="!loadingRules" class="scrollTable" style="flex: 1; max-width: 100%;">
+            <thead>
+                <tr>
+                    <th id="colRulesRuleId" style="max-width: 0; visibility: hidden;"></th>
+                    <th id="colRules{{column.DataId}}" ng-repeat="column in ruleColumnNames" ng-attr-style="{{column.Style}}">{{localTranslate(column.Caption)}}</th>
+                    <th width="{{fillWidths['Rules']}}" />
+                    <th id="padColRules" style="border: none; width: 17px; max-width: 17px; min-width: 17px; display: none;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in Rules" ng-include="getTemplate(item)" style="z-index: 200;"
+                    ng-class-odd="{'row-odd': item.RuleID != selectedRuleItemNumber}"
+                    ng-class-even="{'row-even': item.RuleID != selectedRuleItemNumber}"
+                    ng-class="{rowSelected: item.RuleID == selectedRuleItemNumber}"></tr>
+            </tbody>
+        </table>
+        <table style="max-height: 30px; margin: 5px; width: 100%;">
+            <tr>
+                <td>
+                    <button ng-if="isEditing" ng-click="save()">{{localTranslate('Save', true)}}</button>
+                </td>
+                <td width="5px">&nbsp;</td>
+                <td>
+                    <button ng-if="isEditing" ng-click="cancel()">{{localTranslate('Cancel', true)}}</button>
+                </td>
+                <td width="100%" style="text-align: right; white-space: nowrap;">
+                    <button ng-disabled="appliedRules.length == 0" style="margin-right: 10px;" ng-click="showAppliedRules()">Show Applied Rules</button>
+                </td>
+                <td width="100%" style="text-align: right;">
+                    <button ng-disabled="selectedRuleItemNumber < 1" style="width: 100px; margin-right: 10px;" ng-click="applyRule()">Apply</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<script type="text/ng-template" id="display">
+    <td style="max-width: 0;">{{item.RuleID}}</td>
+    <td ng-repeat="column in ruleColumnNames" title="{{localTranslate(item[column.Caption])}}" id="{{column.DataId}}" ng-attr-style="{{column.Style}}">
+        {{item[column.DataId]}}
+    </td>
+    <td width="{{fillWidths['Rules']}}">&nbsp;</td>
+</script>
+
+<script type="text/ng-template" id="edit">
+    <td style="max-width: 0;">{{item.RuleID}}</td>
+    <td ng-repeat="column in ruleColumnNames" title="{{localTranslate(item[column.DataId])}}" ng-attr-style="{{column.Style}}">
+        <input class="input" type="text" ng-model="editItem[column.DataId]" style="color: black; width: 100%; z-index: 200; position: relative;" />
+    </td>
+    <td width="{{fillWidths['Rules']}}">&nbsp;</td>
+</script>
+
+<div ng-if="displayRules && isRuleEditing" style="position: absolute; left: 0px; top: 0px; height: 100%; width: 100%; padding: 30px 250px 8px 250px; z-index: 400">
+    <div style="background-color: black; opacity: 0.25; height: 100%;"></div>
+</div>
+
+<div ng-if="displayRules && isRuleEditing" style="position: absolute; left: 0px; top: 0px; height: 100%; width: 100%; padding: 50px 350px 70px 350px; z-index: 500;">
+    <div style="display: flex; flex-direction: row; border: 1px solid black; border-bottom: 0; background-color: #7c7155;">
+        <h4 style="width: 100%; padding: 10px; margin: 0; color: white;">{{isAppliedRules ? 'Applied Rules' : localTranslate('CreateEditRule')}}</h4>
+    </div>
+    <form role="form" novalidate angular-validator name="addRule" angular-validator-submit="saveRule()">
+        <div style="background-color: white; border: 1px solid black; display: flex; flex-direction: column; height: 100%;">
+            <p class="heading-table">&nbsp;{{localTranslate('RuleCriteria')}}</p>
+            <div style="flex: 1; display: flex; flex-direction: row;">
+                <div style="display: flex; flex-direction: column;">
+                    <b style="min-height: 30px; padding: 5px;">{{localTranslate('AvailableFields')}}</b>
+                    <div style="flex: 1; border: 1px solid black; margin: 0 5px 5px 5px; max-height: 365px; overflow-y: auto;">
+                        <table>
+                            <tbody>
+                                <tr ng-repeat="column in orderFilterNames">
+                                    <td>
+                                        <input type="checkbox" style="margin-left: 5px; height: 18px; width: 18px;"
+                                               value="{{localTranslate(column.Caption)}}"
+                                               ng-checked="IsRuleSelected(column.Caption)"
+                                               ng-click="toggleRuleSelection(column)" />
+                                    </td>
+                                    <td ng-click="toggleRuleSelection(column)" style="cursor: default; white-space: nowrap; padding: 0 5px 0 2px;">{{localTranslate(column.Caption)}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div style="display: flex; flex: 1; flex-direction: row;">
+                    <div style="display: flex; flex: 1; flex-direction: column;">
+                        <b style="min-height: 30px; padding: 5px;">{{localTranslate('SelectedFilters')}}</b>
+                        <div style="border: 1px solid black; min-height: 300px; max-height: 300px; overflow-y: auto;">
+                            <div ng-if="rule.Status < 2" ng-repeat="rule in rules" style="padding: 5px 10px;">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <td><b>{{rule.Title}}</b></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="border-1">
+                                            <td>
+                                                <table style="margin: 10px;">
+                                                    <tr ng-if="criteria.Status < 2" ng-repeat="criteria in rule.Criteria" style="height: 30px;">
+                                                        <td>
+                                                            <select data-ng-options="type.Description for type in comparisonTypes track by type.Id" data-ng-model="criteria.ComparisonType" style="width: 150px; height: 26px;"></select>
+                                                        </td>
+                                                        <td width="5"></td>
+                                                        <td>
+                                                            <input ng-if="rule.DataType == 'String'" style="width: 150px" data-ng-model="criteria.Value"
+                                                                    name="{{rule.Title}}" required required-message="'&nbsp;Criteria value cannot be empty'" />
+                                                            <input ng-if="rule.DataType == 'Int32'" style="width: 150px" data-ng-model="criteria.Value"
+                                                                    name="{{rule.Title}}" required required-message="'&nbsp;Criteria value cannot be empty'" `/>
+                                                            <input ng-if="rule.DataType == 'DateTime'" type="date" data-ng-model="criteria.Value"
+                                                                    name="{{rule.Title}}" required required-message="'&nbsp;Criteria value cannot be empty'" />
+                                                            <table ng-if="rule.DataType == 'Boolean'">
+                                                                <tr>
+                                                                    <td>
+                                                                        <input type="checkbox" style="margin-left: 5px; height: 18px; width: 18px;"
+                                                                               ng-checked="criteria.Value"
+                                                                               ng-click="criteria.Value = !criteria.Value" />
+                                                                    </td>
+                                                                    <td ng-click="criteria.Value = !criteria.Value" style="cursor: default; width: 25px;">{{criteria.Value ? 'Yes' : 'No'}}</td>
+                                                                </tr>
+                                                            </table>
+                                                            <!--<div ng-if="rule.DataType == 'Boolean'">
+                                                                <input type="radio" id="yes" name="yesno" ng-checked="criteria.Value == true" />
+                                                                <label for="yes">Yes</label>
+                                                                <input type="radio" id="no" name="yesno" ng-checked="criteria.Value == false" />
+                                                                <label for="no">No</label>
+                                                            </div>-->
+                                                        </td>
+                                                        <td ng-if="$last" ng-click="addCriteria(rule)"><i class="fa fa-plus-circle fa-fw" style="color: green; cursor: pointer;"></i></td>
+                                                        <td ng-if="!$last" ng-click="removeCriteria(rule, $index)"><i class="fa fa-close fa-fw" style="color: red; cursor: pointer;"></i></td>
+                                                        <td ng-if="!$last" style="padding-right: 10px;">
+                                                            <select data-ng-options="c.Name for c in conditions track by c.Id" data-ng-model="criteria.Operator"></select>
+                                                        </td>
+                                                    </tr>
+                                                    <!--<tr>
+                                                        <td id="{{rule.Title}}" class="has-error" style="visibility: hidden;">
+                                                            <label class="control-label has-error validationMessage">Rule name is required</label>
+                                                        </td>
+                                                    </tr>-->
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <!--<tr ng-if="!$last">
+                                            <td style="padding-top: 10px; padding-right: 10px;">
+                                                <select ng-model="rule.Operator">
+                                                    <option>AND</option>
+                                                    <option>OR</option>
+                                                </select>
+                                            </td>
+                                        </tr>-->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <table style="min-height: 65px; margin: 5px;">
+                            <tr>
+                                <td style="white-space: nowrap;"><b>{{localTranslate('RuleName')}}:&nbsp;</b></td>
+                                <td>
+                                    <input name="ruleName" class="form-control" ng-model="editCriteriaItem.RuleName" autofocus="" tabindex="1"
+                                           placeholder="Rule Name" style="width: 250px; height: 25px;" maxlength="255"
+                                           validate-on="blur" required required-message="'{{localTranslate('RuleNameRequired')}}'">
+                                </td>
+                                <td width="100%" style="text-align: right; padding-right: 5px;">
+                                    <button style="width: 100px;" ng-click="applyRuleDirect()">Apply</button>
+                                </td>
+                                <td tabindex="3"><button type="submit" style="width: 100px;">{{localTranslate('Save', true)}}</button></td>
+                            </tr>
+                            <tr>
+                                <td style="white-space: nowrap;"><b>Rule Description:&nbsp;</b></td>
+                                <td>
+                                    <input class="form-control" style="width: 250px; height: 25px;" maxlength="255" tabindex="2"
+                                           ng-model="editCriteriaItem.Description" placeholder="Description">
+                                </td>
+                                <td width="100%"></td>
+                                <td tabindex="4"><button style="width: 100px;" ng-click="closeCriteria()">{{localTranslate('Cancel', true)}}</button></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<nav id="context-menu" class="context-menu orders" style="width: 100px; z-index: 200; position: absolute;">
+    <ul class="context-menu__items">
+        <li class="context-menu__item">
+            <a id="search" class="context-menu__link active" data-action="Delete"><i class="fa fa-eye"></i> {{localTranslate('Search', true)}}...</a>
+        </li>
+        <li class="context-menu__item">
+            <a id="refresh" class="context-menu__link active" data-action="Delete"><i class="fa fa-refresh"></i> {{localTranslate('Refresh', true)}}</a>
+        </li>
+    </ul>
+</nav>
+
+<nav id="context-menu" class="context-menu rules" style="width: 150px; z-index: 2000;">
+    <ul class="context-menu__items">
+        <li class="context-menu__item">
+            <a id="New" ng-class="getRuleMenuClass('new')" class="context-menu__link active"><i class="fa fa-tasks"></i> {{localTranslate('AddNew', true)}}</a>
+        </li>
+        <li><hr style="height: 5px; padding: 0; margin: 0" /></li>
+        <li class="context-menu__item">
+            <a id="Edit" ng-class="getRuleMenuClass('edit')" class="context-menu__link active"><i class="fa fa-random"></i> {{localTranslate('EditItem', true)}}</a>
+        </li>
+        <li class="context-menu__item">
+            <a id="Delete" ng-class="getRuleMenuClass('delete')" class="context-menu__link active"><i class="fa fa-remove"></i> {{localTranslate('DeleteItem', true)}}</a>
+        </li>
+        <li class="context-menu__item">
+            <a id="Criteria" ng-class="getRuleMenuClass('criteria')" class="context-menu__link active"><i class="fa fa-keyboard-o"></i> {{localTranslate('EditCriteria')}}...</a>
+        </li>
+    </ul>
+</nav>

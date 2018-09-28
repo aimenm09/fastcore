@@ -1,0 +1,175 @@
+﻿<div class="row">
+    <div class="panel panel-primary" style="margin: 0;">
+        <div class="panel-heading clearfix">
+            <h4 class="panel-title pull-left">{{Baton.PageDetails.PageTitle}}</h4>
+        </div>
+        <form>
+            <div class="panel-body" style="padding: 0 0 0 5px;">
+                <table style="font-size: x-large; font-weight: bold;">
+                    <tr>
+                        <td style="vertical-align: top;">
+                            <label>{{Baton.PageDetails.PromptText}}</label>
+                            <table class="headerLayout" style="margin-left: 30px;">
+                                <tr id="ToteLPN">
+                                    <td style="padding-right: 3px; text-align: right;">{{localTranslate('Tote')}}:&nbsp;</td>
+                                    <td colspan="2" style="padding-bottom: 3px;" class="highlight">
+                                        <input id="ToteLPNInput" class="form-control" autocomplete="off" style="font-size: x-large; height: 42px;" ng-model="Baton.Picks.CurrentPick.DestinationContainerLpn">
+                                    </td>
+                                </tr>
+                                <tr id="ToteType" style="visibility: hidden;">
+                                    <td style="padding-right: 3px; text-align: right;">{{localTranslate('ToteType')}}:&nbsp;</td>
+                                    <td colspan="2" style="padding-bottom: 3px;" class="highlight">
+                                        <input id="ToteTypeInput" class="form-control" autocomplete="off" style="font-size: x-large; height: 42px;" readonly="readonly" value="P1">
+                                    </td>
+                                </tr>
+                                <tr id="PalletLPN" style="visibility: hidden;">
+                                    <td style="padding-right: 3px; text-align: right;">{{localTranslate('Pallet')}}:&nbsp;</td>
+                                    <td colspan="2" style="padding-bottom: 3px;" class="highlight">
+                                        <input id="PalletLPNInput" class="form-control" autocomplete="off" style="font-size: x-large; height: 42px;" ng-model="Baton.Picks.CurrentPick.SourceContainerLpn">
+                                    </td>
+                                </tr>
+                                <tr id="Sku" style="visibility: hidden;">
+                                    <td style="padding-right: 3px; text-align: right;">{{localTranslate('SKU')}}:&nbsp;</td>
+                                    <td colspan="2" style="padding-bottom: 3px;" class="highlight">
+                                        <input id="SkuInput" class="form-control" autocomplete="off" style="font-size: x-large; height: 42px;" ng-model="Baton.Picks.CurrentPick.InputSku">
+                                    </td>
+                                </tr>
+                                <tr id="Scanned" style="visibility: hidden;">
+                                    <td style="padding-right: 3px; text-align: right;">{{localTranslate('Scanned')}}:&nbsp;</td>
+                                    <td style="padding-bottom: 3px;">
+                                        &nbsp;<input id="ScannedInput" autocomplete="off" style="font-size: x-large; height: 42px; border: 0; vertical-align: middle;" ng-model="toteInfo.Scanned">
+                                    </td>
+                                </tr>
+                                <tr id="Quantity" style="visibility: hidden;">
+                                    <td style="padding-right: 3px; text-align: right;">{{localTranslate('Quantity')}}:&nbsp;</td>
+                                    <td ng-if="toteInfo.Quantity != '0'" style="padding-bottom: 3px;">
+                                        &nbsp;<input autocomplete="off" style="font-size: x-large; height: 42px; border: 0; vertical-align: middle;" ng-model="toteInfo.Quantity">
+                                    </td>
+                                </tr>
+                                <tr id="Weight" style="visibility: hidden;">
+                                    <td style="padding-right: 3px; text-align: right;">{{localTranslate('Weight')}}&nbsp;/&nbsp;{{localTranslate('Volume')}}:</td>
+                                    <td style="padding-bottom: 3px;">
+                                        <table>
+                                            <tr>
+                                                <td>&nbsp;{{toteInfo.Weight}}</td>
+                                                <td>&nbsp;{{toteInfo.ToteDetails.TotalVolume}}</td>
+                                                <td>&nbsp;in<sup>3</sup></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr id="ConfirmTote" style="visibility: hidden;">
+                                    <td style="padding-right: 3px; text-align: right;">{{localTranslate('ConfirmTote')}}:&nbsp;</td>
+                                    <td colspan="2" style="padding-bottom: 3px;" class="highlight">
+                                        <input id="ConfirmToteInput" autocomplete="off" class="form-control" style="font-size: x-large; height: 42px;" ng-model="Baton.Picks.CurrentPick.ConfirmToteLpn">
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td width="5">&nbsp;</td>
+                        <td ng-if="toteVisible" style="vertical-align: top;">
+                            <label>&nbsp;</label>
+                            <table style="border: 1px solid darkgray;">
+                                <tr>
+                                    <td>
+                                        <table style="border-right: 1px solid darkgray;">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="4" style="height: 40px; text-align:center; border-bottom: 1px solid darkgray;">{{localTranslate('ToteInformation')}}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="4" style="text-align: center;">
+                                                        <img src="Content/images/1.png" height="240" />
+                                                    </td>
+                                                </tr>
+                                                <!--<tr>
+                                                    <td width="50" style="height: 22px; text-align: center; border-top: 1px solid darkgray;">&nbsp;T1</td>
+                                                    <td width="50" style="white-space: nowrap;">Compartment:&nbsp;</td>
+                                                    <td width="25">1</td>
+                                                    <td width="50" style="text-align: center;">T2</td>
+                                                </tr>-->
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td width="5">&nbsp;</td>
+                                    <td style="vertical-align: top; min-width: 200px; min-width: 300px;">
+                                        <table style="font-size: x-large; height: 42px; margin-right: 5px;">
+                                            <tr>
+                                                <td height="26" style="font-weight: bold; vertical-align: middle; text-align: right;">{{localTranslate('SKU')}}:</td>
+                                                <td height="26">&nbsp;{{toteInfo.ToteDetails.SKU}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td height="26" style="font-weight: bold; vertical-align: middle; text-align: right;">{{localTranslate('UOM')}}:</td>
+                                                <td height="26">&nbsp;{{toteInfo.ToteDetails.UOM}}</td>
+                                            </tr>
+                                            <tr ng-if="toteInfo.ToteDetails.Quantity > 0">
+                                                <td height="26" style="font-weight: bold; vertical-align: middle; text-align: right;">{{localTranslate('Quantity')}}:</td>
+                                                <td height="26">&nbsp;{{toteInfo.ToteDetails.Quantity}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td height="26" style="font-weight: bold; vertical-align: middle; text-align: right;">{{localTranslate('Weight')}}:</td>
+                                                <td ng-if="toteInfo.ToteDetails.Weight > 0" height="26">&nbsp;{{toteInfo.ToteDetails.Weight}} lbs</td>
+                                            </tr>
+                                            <tr>
+                                                <td height="26" style="font-weight: bold; vertical-align: middle; text-align: right;">{{localTranslate('TotalVolume')}}:</td>
+                                                <td ng-if="toteInfo.ToteDetails.TotalVolume > 0" height="26">&nbsp;{{toteInfo.ToteDetails.TotalVolume}} in<sup>3</sup></td>
+                                            </tr>
+                                            <tr>
+                                                <td height="26" style="font-weight: bold; vertical-align: middle; text-align: right;">{{localTranslate('Volume')}}:</td>
+                                                <td ng-if="toteInfo.ToteDetails.Volume > 0" height="26">&nbsp;{{toteInfo.ToteDetails.Volume}} in<sup>3</sup></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div ng-if="gridVisible" class="panel-footer clearfix">
+                <table>
+                    <tr>
+                        <td style="vertical-align: top;">
+                            <table id="Details" class="scrollTable" style="font-size: x-large; border: 1px solid darkgray;">
+                                <thead>
+                                    <tr>
+                                        <th id="Location" style="padding: 0 5px; min-width: 100px; max-width: 100px; cursor: pointer;">&nbsp;{{localTranslate('Location')}}&nbsp;<i ng-class="getSortClass('BadgeID')" style="display: inline-block;"></i></th>
+                                        <th id="SKU" style="padding: 0 5px; min-width: 100px; max-width: 100px; cursor: pointer;">&nbsp;{{localTranslate('SKU')}}&nbsp;<i ng-class="getSortClass('UserName')" style="display: inline-block;"></i></th>
+                                        <th id="Description" style="padding: 0 5px; min-width: 200px; max-width: 200px; cursor: pointer;">&nbsp;{{localTranslate('Description')}}&nbsp;<i ng-class="getSortClass('Description')" style="display: inline-block;"></i></th>
+                                        <th id="UOM" style="padding: 0 5px; min-width: 100px; max-width: 100px; cursor: pointer;">&nbsp;{{localTranslate('UOM')}}&nbsp;<i ng-class="getSortClass('FirstName')" style="display: inline-block;"></i></th>
+                                        <th id="Weight" style="padding: 0 5px; min-width: 100px; max-width: 100px; cursor: pointer;">&nbsp;{{localTranslate('Weight')}}&nbsp;<i ng-class="getSortClass('Email')" style="display: inline-block;"></i></th>
+                                        <th id="Quantity" style="padding: 0 5px; min-width: 100px; max-width: 100px; cursor: pointer;">&nbsp;{{localTranslate('Quantity')}}&nbsp;<i ng-class="getSortClass('LastName')" style="display: inline-block;"></i></th>
+                                        <th id="Estimated Cases" style="padding: 0 5px; min-width: 130px; max-width: 130px; cursor: pointer;">&nbsp;{{localTranslate('EstimatedCases')}}&nbsp;<i ng-class="getSortClass('EstimatedCases')" style="display: inline-block;"></i></th>
+                                        <th id="Estimated Totes" style="padding: 0 5px; min-width: 125px; max-width: 125px; cursor: pointer;">&nbsp;{{localTranslate('EstimatedTotes')}}&nbsp;<i ng-class="getSortClass('EstimatedTotes')" style="display: inline-block;"></i></th>
+                                        <th width="{{fillWidth}}">&nbsp;</th>
+                                        <th id="padCol" style="border: none; width: 17px; max-width: 17px; min-width: 17px; display: none;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody style="height: 50px;">
+                                    <tr ng-repeat="item in toteInfo.Details" style="z-index: 200;"
+                                        ng-class-odd="{'row-odd': item.SKU != selectedSKU}"
+                                        ng-class-even="{'row-even': item.SKU != selectedSKU}"
+                                        ng-class="{rowSelected: item.SKU == selectedSKU}">
+                                        <td style="padding: 0 5px; min-width: 100px; max-width: 100px;">&nbsp;{{item.Location}}</td>
+                                        <td style="padding: 0 5px; min-width: 100px; max-width: 100px;">&nbsp;{{item.SKU}}</td>
+                                        <td style="padding: 0 5px; min-width: 200px; max-width: 200px;">&nbsp;{{item.Description}}</td>
+                                        <td style="padding: 0 5px; min-width: 100px; max-width: 100px;">&nbsp;{{item.UOM}}</td>
+                                        <td style="padding: 0 5px; min-width: 100px; max-width: 100px;">&nbsp;{{item.Weight}}</td>
+                                        <td style="padding: 0 5px; min-width: 100px; max-width: 100px;">&nbsp;{{item.Quantity}}</td>
+                                        <td style="padding: 0 5px; min-width: 130px; max-width: 130px;">&nbsp;{{item.EstCases}}</td>
+                                        <td style="padding: 0 5px; min-width: 125px; max-width: 125px;">&nbsp;{{item.EstTotes}}</td>
+                                        <td width="{{fillWidth}}">&nbsp;</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="details" id="DetailsGrips" style="height: 10px; overflow-x: hidden; background-color: transparent; z-index: 100; position: fixed;"></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <button ng-click="reset()" style="font-size: x-large; margin: 5px; margin-left: 15px;">Reset</button>&nbsp;<button style="font-size: x-large; margin: 0 5px 0 0;" ng-click="back()">Back</button>&nbsp;<button style="font-size: x-large; margin: 0 5px 0 0;" ng-click="process()">Process</button>
+        </form>
+    </div>
+</div>

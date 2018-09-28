@@ -1,0 +1,71 @@
+﻿<div class="row">
+    <div class="panel panel-primary" style="margin: 0;">
+        <div class="panel-heading clearfix">
+            <h4 class="panel-title pull-left">XXXX Configuration</h4>
+        </div>
+        <div style="margin-top: 5px;">
+            <table id="tblMain">
+                <tr>
+                    <!-- Main Window -->
+                    <td width="5">&nbsp;</td>
+                    <td style="vertical-align: top;">
+                        <table ng-if="loadingXXXX" height="100%" width="100%">
+                            <tr><td style="text-align: center;"><i class="fa fa-refresh fa-5x fa-spin"></i></td></tr>
+                            <tr><td style="text-align: center;"><label class="label label-primary">Loading XXXX...</label></td></tr>
+                        </table>
+                        <div ng-if="!loadingXXXX" style="width: 570px;">
+                            <div ng-init="sizePanels()"></div>
+                            <table id="tblXXXX" class="scrollTable XXXX" style="overflow-x: hidden;">
+                                <thead>
+                                    <tr>
+                                        <th ng-click="sort('xxxx', 'Column1');" style="min-width: 125px; max-width: 125px; cursor: pointer;">&nbsp;Column 1&nbsp;<i ng-class="getSortClass('xxxx', 'Column1')" style="display: inline-block;"></i></th>
+                                        <th ng-click="sort('xxxx', 'Column2');" style="min-width: 125px; max-width: 125px; cursor: pointer;">&nbsp;Column 2&nbsp;<i ng-class="getSortClass('xxxx', 'Column2')" style="display: inline-block;"></i></th>
+                                        <th ng-click="sort('xxxx', 'Column3');" style="min-width: 120px; max-width: 120px; cursor: pointer;">&nbsp;Column 3&nbsp;<i ng-class="getSortClass('xxxx', 'Column3')" style="display: inline-block;"></i></th>
+                                        <th ng-click="sort('xxxx', 'Column4');" style="min-width: 100px; max-width: 100px; cursor: pointer;">&nbsp;Column 4&nbsp;<i ng-class="getSortClass('xxxx', 'Column4')" style="display: inline-block;"></i></th>
+                                        <th ng-click="sort('xxxx', 'Column5');" style="min-width: 100px; max-width: 100px; cursor: pointer;">&nbsp;Column 5&nbsp;<i ng-class="getSortClass('xxxx', 'Column5')" style="display: inline-block;"></i></th>
+                                    </tr>
+                                </thead>
+                                <tbody style="height: 300px;">
+                                    <tr ng-repeat="xxxxItem in xxxxList"
+                                        ng-class-odd="'row-odd'" ng-class-even="'row-even'">
+                                        <td style="min-width: 125px; max-width: 125px;">&nbsp;<a href="" ng-click=functionName(xxxxItem.Property1)>{{xxxxItem.Property2}}</a></td>
+                                        <td style="min-width: 125px; max-width: 125px;">&nbsp;{{xxxxItem.Property3}}</td>
+                                        <td style="min-width: 120px; max-width: 120px;">&nbsp;{{xxxxItem.Property4}}</td>
+                                        <td style="min-width: 100px; max-width: 100px;">&nbsp;{{xxxxItem.Property5}}</td>
+                                        <td style="min-width: 100px; max-width: 100px;">&nbsp;{{xxxxItem.Property6}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div ng-if="!loadingXXXX" class="text-center" style="height: 45px;">
+                            <custom-pager page="{{page}}" pages-count="{{pagesCount}}" total-count="{{totalCount}}" search-func="loadXXXX(page)"></custom-pager>
+                        </div>
+                    </td>
+                    <td width="5">&nbsp;</td>
+                
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<nav id="context-menu" class="context-menu example" style="width: 200px;">
+    <ul class="context-menu__items">
+        <li class="context-menu__item">
+            <a ng-click="menuSelection('example', 'item1')" class="context-menu__link" data-action="View"><i class="fa fa-tasks"></i> Item 1</a>
+        </li>
+        <li><hr style="height: 5px; padding: 0; margin: 0" /></li>
+        <li class="context-menu__item">
+            <a ng-click="menuSelection('example', 'item2')" class="context-menu__link" data-action="Edit"><i class="fa fa-remove"></i> Item 2</a>
+        </li>
+        <li class="context-menu__item">
+            <a ng-click="menuSelection('example', 'item3')" class="context-menu__link" data-action="Delete"><i class="fa fa-random"></i> Item 3</a>
+        </li>
+        <li><hr style="height: 5px; padding: 0; margin: 0" /></li>
+        <li class="context-menu__item">
+            <a ng-click="menuSelection('example', 'item4')" class="context-menu__link" data-action="Delete"><i class="fa fa-eye"></i> Item 4</a>
+        </li>
+        <li class="context-menu__item">
+            <a ng-click="menuSelection('example', 'item5')" class="context-menu__link" data-action="Delete"><i class="fa fa-refresh"></i> Item 5</a>
+        </li>
+    </ul>
+</nav>

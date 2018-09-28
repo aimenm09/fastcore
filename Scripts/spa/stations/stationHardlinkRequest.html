@@ -1,0 +1,26 @@
+﻿<div class="row">
+    <div class="panel panel-primary" style="margin: 0;">
+        <div class="panel-heading">
+            {{localTranslate('spa.station.station.LinkStation', true)}}
+        </div>
+        <div class="panel-body">
+            <div class="">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="control-label">Step 1: Open Station Configuration in a new tab and use following link code associate this device a station.  Then press button: {{linkCode}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <label class="control-label">Step 2: After linking in the Station Configuration, press Link button to finalize link.  Press Cancel to abort link.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer clearfix">
+            <div class="pull-right">
+                <button type="button" class="btn btn-primary" ng-click="setHardLink()">{{localTranslate('spa.station.station.Link', true)}}</button>
+                <button type="button" class="btn btn-primary" ng-click="cancel()">{{localTranslate('Cancel', true)}}</button>
+            </div>
+        </div>
+
+    </div>
+</div>

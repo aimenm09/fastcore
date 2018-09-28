@@ -1,0 +1,25 @@
+﻿<div class="row">
+    <div class="panel panel-primary" style="margin: 0;">
+        <div class="panel-heading">
+            {{Title}}
+        </div>
+        <form role="form" novalidate angular-validator name="linkStationForm" angular-validator-submit="okButton()">
+            <div class="panel-body">
+                <div class="">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="control-label">{{Message}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer clearfix">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-primary">{{localTranslate('OK', true)}}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

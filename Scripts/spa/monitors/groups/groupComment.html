@@ -1,0 +1,32 @@
+﻿<div class="panel panel-primary">
+    <div class="panel-heading">
+        {{localTranslate('View')}} / {{localTranslate('Edit')}} {{GroupComment.DisplayName}}
+    </div>
+    <form role="form" novalidate angular-validator name="groupCommentForm" angular-validator-submit="addComment()">
+        <div class="panel-body">
+            <div class="">
+                <div class="form-group">
+                    <div ng-if="GroupComment.GroupId > 0" class="row">
+                        <div class="col-sm-6">
+                            <label class="control-label" for="groupName">{{localTranslate('GroupNumber')}}</label>
+                            <input type="text" class="form-control" ng-model="GroupComment.GroupId" name="groupNumber" id="groupNumber" readonly />
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-sm-6">
+                            <label class="control-label" for="comment">{{GroupComment.DisplayName}}</label>
+                            <textarea rows="5" cols="40" class="form-control" ng-model="GroupComment.Comment" name="comment" id="comment"
+                                      autofocus="" validate-on="blur"> </textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer clearfix">
+            <div class="pull-right">
+                <button type="submit" class="btn btn-primary">{{localTranslate('OK', true)}}</button>
+                <button type="button" class="btn btn-primary" ng-click="cancel()">{{localTranslate('Cancel', true)}}</button>
+            </div>
+        </div>
+    </form>
+</div>

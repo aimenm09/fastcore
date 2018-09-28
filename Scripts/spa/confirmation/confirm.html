@@ -1,0 +1,24 @@
+﻿<div class="panel panel-primary">
+    <div class="panel-heading">
+        FastTrak {{translate('Administration')}}
+    </div>
+    <div class="panel-body">
+        <form role="form" novalidate angular-validator name="confirmForm">
+            <div class="">
+                <div class="form-group">
+                    <div class="row">
+                        <div style="padding-left:10px;">
+                            <label class="control-label">{{ConfirmText}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="panel-footer clearfix">
+        <div class="pull-right">
+            <button type="button" class="btn btn-primary" ng-click="deleteObject()">OK</button>
+            <button type="button" class="btn btn-danger" ng-click="cancelDelete()">Cancel</button>
+        </div>
+    </div>
+</div>

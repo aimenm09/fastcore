@@ -1,0 +1,140 @@
+﻿<style>
+    .navigationCell {
+        line-height: 1.75em;
+    }
+
+        .navigationCell ol {
+            list-style: none;
+        }
+
+        .navigationCell li {
+            list-style: none;
+        }
+
+    iframe {
+        min-height: 600px;
+        border: none;
+    }
+
+    .reportList ol {
+        margin-left: 0;
+        padding-left: 0;
+        font-size: 1em;
+        font-weight: bold;
+        text-align: left;
+        color: gray;
+    }
+
+    .reportList li {
+        font-size: 1em;
+        margin-left: .5em;
+        padding-left: .5em;
+        font-weight: normal;
+    }
+
+    #tblNavigation {
+        margin-top: 25px;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+
+    #tblEmbedConfig {
+        margin-top: 25px;
+    }
+</style>
+<div class="row" style="height: 100%; min-width: 1200px;">
+    <div style="margin: 0; height: 100%;">
+        <div class="panel-heading clearfix">
+            <h4 class="panel-title pull-left">Invata BI Dashboards</h4>
+        </div>
+        <div class="panel panel-primary" style="margin-top: 5px; height: 100%;">
+            <table id="tblMain">
+                <!-- EmbedList -->
+                <tr>
+                    <td style="vertical-align:top; height: 100%;">
+                        <table id="tblNavigation" style="">
+                            <thead>
+                                <!-- Navigation -->
+                                <tr>
+                                    <th colspan="4"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="navigationCell">
+                                        <div>
+                                            <text class="reportList" ng-if="ReportList.Reports.length > 0">
+                                                <ol ng-repeat="r in ReportList.Reports"> {{r.Name}}
+                                                    <li ng-repeat="p in r.Pages">
+                                                        <a href="" ng-click="togglePageSelection(r.ReportID, p.DisplayName, p.DisplayFilters, p.DisplayNavigation)">{{p.DisplayName}}</a>
+                                                    </li>
+                                                </ol>
+                                            </text>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <!-- Interaction -->
+                    <td width="5">&nbsp;</td>
+                    <td style="vertical-align:top; width: 97%;">
+                        <table id="tblEmbedConfig" style="width: 97%;">
+                            <thead>
+                            </thead>
+                            <tbody>
+                                <!-- EmbedConfig -->
+                                <tr>
+                                    <td style="width: 100%;">
+                                        <div class="tab-container" ng-if="PageDetails.length > 0">
+                                            <div class="ng-isolate-scope">
+                                                <ul class="nav nav-tabs" data-as-sortable="" data-ng-model="tabs">
+                                                    <li style="border: solid 1px black; height: 20px;" ng-repeat="(index,tab) in PageDetails" data-as-sortable-item ng-class="tab.active ? 'active' : ''">
+                                                        <a href="" ng-click="selectTab(tab)" class="ng-binding" data-as-sortable-item-handle style="float: left; margin: 0; padding: 0 3px 0 3px; height: 18px;">
+                                                            {{tab.title}}&nbsp;
+                                                        </a>
+                                                        <button style="float: right; height: 18px; line-height: normal; margin: 0; padding: 0; background-color: lightgray" ng-click="closeTab(index)">X</button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="tab-content" style="width:100%; min-height:600px; margin-bottom: 50px; height: 100%;">
+                                                <div class="tab-pane" ng-repeat="(index,tab) in PageDetails" ng-class="tab.active ? 'active' : ''" style="width: 100%; min-height: 600px; height: 100%;">
+                                                    <div ng-attr-id="Pages{{tab.id}}" style="background-color: #eeeeee; border: none; display: block; width: 100%; min-height: 600px; height: 100%;"></div>
+                                                    <div ng-attr-id="Menu{{tab.id}}" style="display: block; height:4%; width:100%; padding-top: 1px; background-color: #eeeeee; overflow:hidden;">
+                                                        <!--Right side of menu-->
+                                                        <a href="" ng-click="menuSelection('Fullscreen')" class="pointer" style="color:#000000; float:right; margin-left:5px; margin-right: 5px;">
+                                                            <i class="glyphicon glyphicon-resize-full" id="maxmin" title="Enter Full Screen Mode" aria-label="Enter Full Screen Mode"></i>
+                                                        </a>
+                                                        <a href="" ng-click="menuSelection('Print')" class="pointer" style="color:#000000; float:right; margin-left:5px; margin-right:5px;">
+                                                            <i class="glyphicon glyphicon-print" id="maxmin" title="Print Dashboard" aria-label="Print Dashboard"></i>
+                                                        </a>
+                                                        <a href="" ng-click="menuSelection('Reload', tab)" class="pointer" style="color:#000000; float:right; margin-left:5px; margin-right:5px;">
+                                                            <i class="glyphicon glyphicon-repeat" id="maxmin" title="Reload Dashboard" aria-label="Reload Dashboard"></i>
+                                                        </a>
+                                                        <a href="" ng-click="menuSelection('Refresh')" class="pointer" style="color:#000000; float:right; margin-left:5px; margin-right:5px;">
+                                                            <i class="glyphicon glyphicon-refresh" id="maxmin" title="Refresh Dataset(s)" aria-label="Refresh Dataset(s)"></i>
+                                                        </a>
+                                                        <!--Left side of menu-->
+                                                        <a href="" ng-click="menuSelection('Bookmark')" class="pointer" style="color:#000000; float:left; margin-left:5px; margin-right:5px;">
+                                                            <i class="glyphicon glyphicon-bookmark" id="maxmin" title="Enable Bookmarks" aria-label="Enable Bookmarks"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div ng-attr-id="Error{{tab.id}}" style="display:none;">
+                                                        Some error.
+                                                    </div>
+                                                    <div ng-attr-id="Loading{{tab.id}}" style="display:none;">
+                                                        Loading...
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

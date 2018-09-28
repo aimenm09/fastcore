@@ -1,0 +1,94 @@
+﻿<div class="row" style="min-width: 850px;">
+    <div style="margin: 0;">
+        <div class="panel-heading clearfix">
+            <h4 class="panel-title pull-left">Invata BI Configuration</h4>
+            <div ng-if="isSearching">
+                <div style="border: solid 1px black; margin-left: 200px; padding: 5px; white-space: nowrap; display: inline-block;">
+                    <button class="btn btn-primary" ng-click="searchAgain()">{{localTranslate('SearchAgain', true)}}</button><span style="color: white;"> {{localTranslate('ForSearchOn', true)}} {{SearchInfo.ColumnName}} {{localTranslate('for', true)}} {{SearchInfo.SearchTerm}}</span>
+                    <button style="float: right; height: 18px; line-height: normal; margin: 0; padding: 0; margin-left: 5px; background-color: lightgray; margin-top: 7.5px;" ng-click="closeSearch()">X</button>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 5px;">
+            <table id="tblMain">
+                <tr>
+                    <!-- Main Window -->
+                    <td width="5">&nbsp;</td>
+                    <td style="vertical-align: top; border: solid 1px black;">
+                        <p class="heading-table">&nbsp;Dashboards</p>
+                        <div id="dvReports" style="overflow-x: auto;">
+                            <table ng-if="loadingReports" class="loading" height="100%" width="100%" style="border-bottom: 1px solid black;">
+                                <tr><td style="text-align: center;"><i class="fa fa-refresh fa-5x fa-spin"></i></td></tr>
+                                <tr><td style="text-align: center;"><label class="label label-primary">Loading dashboards...</label></td></tr>
+                            </table>
+                            <table ng-if="!loadingReports" width="100%" id="tblReports" class="scrollTable">
+                                <thead>
+                                    <tr>
+                                        <!--<th id="ID" style="visibility: collapse; padding: 0 0px; min-width: 0px; max-width: 0px; cursor: pointer;">&nbsp;ID&nbsp;<i ng-class="getSortClass('ID')" style="display: inline-block; visibility: collapse;"></i></th>-->
+                                        <th id="Name" style="padding: 0 5px; min-width: 185px; max-width: 185px; cursor: pointer;">&nbsp;Name&nbsp;<i ng-class="getSortClass('Name')" style="display: inline-block;"></i></th>
+                                        <th id="ReportID" style="padding: 0 5px; min-width: 300px; max-width: 300px; cursor: pointer;">&nbsp;ReportID&nbsp;<i ng-class="getSortClass('ReportID')" style="display: inline-block;"></i></th>
+                                        <th id="DisplayFilters" style="padding: 0 5px; min-width: 200px; max-width: 200px; cursor: pointer;">&nbsp;Display Filters&nbsp;<i ng-class="getSortClass('DisplayFilters')" style="display: inline-block;"></i></th>
+                                        <th id="DisplayNavigation" style="padding: 0 5px; min-width: 200px; max-width: 200px; cursor: pointer;">&nbsp;Display Navigation&nbsp;<i ng-class="getSortClass('DisplayNavigation')" style="display: inline-block;"></i></th>
+                                        <th id="Active" style="padding: 0 5px; min-width: 200px; max-width: 200px; cursor: pointer;">&nbsp;Active&nbsp;<i ng-class="getSortClass('Active')" style="display: inline-block;"></i></th>
+                                        <td width="{{fillWidth}}">&nbsp;</td>
+                                        <th id="padCol" style="border: none; width: 17px; max-width: 17px; min-width: 17px; display: none;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reports" style="height: 300px;">
+                                    <tr ng-repeat="item in reports" style="z-index: 200;"
+                                        ng-class-odd="{'row-odd': item.ID != selectedItemNumber}"
+                                        ng-class-even="{'row-even': item.ID != selectedItemNumber}"
+                                        ng-class="{rowSelected: item.ID == selectedItemNumber}">
+
+                                        <!--<td style="padding: 0 0px; min-width: 0px; max-width: 0px; visibility: collapse;">&nbsp;{{item.ID}}</td>-->
+                                        <td style="padding: 0 5px; min-width: 185px; max-width: 185px;">&nbsp;{{item.Name}}</td>
+                                        <td style="padding: 0 5px; min-width: 300px; max-width: 300px;">&nbsp;{{item.ReportID}}</td>
+                                        <td style="padding: 0 5px; min-width: 200px; max-width: 200px; cursor: pointer; text-align: center;">
+                                            <input class="input" type="checkbox" ng-model="item.DisplayFilters" ng-click="toggleSelection(item)" style="height: 18px; width: 18px; z-index: 200; position: relative; cursor: pointer;" />
+                                        </td>
+                                        <td style="padding: 0 5px; min-width: 200px; max-width: 200px; cursor: pointer; text-align: center;">
+                                            <input class="input" type="checkbox" ng-model="item.DisplayNavigation" ng-click="toggleSelection(item)" style="height: 18px; width: 18px; z-index: 200; position: relative; cursor: pointer;" />
+                                        </td>
+                                        <td style="padding: 0 5px; min-width: 200px; max-width: 200px; cursor: pointer; text-align: center;">
+                                            <input class="input" type="checkbox" ng-model="item.Active" ng-click="toggleSelection(item)" style="height: 18px; width: 18px; z-index: 200; position: relative; cursor:pointer;" />
+                                        </td>
+                                        <td width="{{fillWidth}}">&nbsp;</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <div class="reports" id="dvGrips" style="height: 10px; overflow-x: hidden; background-color: transparent; z-index: 100; position: absolute;"></div>
+                            <table style="margin: 5px;">
+                                <tr>
+                                    <td>
+                                        <button ng-click="save()" ng-hide="isEditing()">{{localTranslate('Save', true)}}</button>
+                                    </td>
+                                    <td width="5px"></td>
+                                    <td>
+                                        <button ng-click="cancel()" ng-hide="isEditing()">{{localTranslate('Cancel', true)}}</button>
+                                    </td>
+                                    <td width="5px"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div ng-if="!loadingReports" class="text-center" style="height: 32px;">
+                            <custom-pager page="{{page}}" pages-count="{{pagesCount}}" total-count="{{totalCount}}" search-func="loadReports(page)"></custom-pager>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<nav id="context-menu" class="context-menu reports" style="width: 200px; z-index: 2000;">
+    <ul class="context-menu__items">
+        <li class="context-menu__item">
+            <a ng-click="menuSelection('ActivatePages')" class="context-menu__link active" data-action="View"><i class="fa fa-tasks"></i> Activate Pages</a>
+        </li>
+        <li><hr style="height: 5px; padding: 0; margin: 0" /></li>
+        <li class="context-menu__item">
+            <a ng-click="menuSelection('Search')" class="context-menu__link active" data-action="Search"><i class="fa fa-eye"></i> Search...</a>
+        </li>
+    </ul>
+</nav>

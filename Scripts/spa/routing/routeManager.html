@@ -1,0 +1,136 @@
+﻿<div class="row">
+    <div class="" style="min-height: 50px;" ng-init="sizePanels()">
+        <div class="panel-heading clearfix" style="margin: 0; height: 48px;">
+            <h4 class="panel-title pull-left" style="margin: 0; padding: 10px 0px;">{{localTranslate('RouteManager')}}</h4>
+            <div style="cursor: pointer; margin: 0; padding: 0; background-color: red;">
+                <ul class="nav navbar-nav" style="margin-top: -15px">
+                    <li class="dropdown" style="padding-top: 10px; height: 50px; background-color: transparent;">
+                        <a style="background-color: transparent;">{{localTranslate('Engines')}}</a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <table>
+                                    <tr ng-repeat="engine in engines">
+                                        <td>
+                                            <input type="checkbox" style="margin-left: 5px;"
+                                                   value="{{engine}}"
+                                                   ng-checked="IsEngineSelected(engine)"
+                                                   ng-click="toggleEngineSelection(engine)" />
+                                        </td>
+                                        <td ng-click="toggleEngineSelection(engine)" style="color: black; padding: 0 5px; cursor: default">{{engine.EngineId}}</td>
+                                    </tr>
+                                </table>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <table ng-if="spinnerVisible" height="100%" width="100%">
+            <tr><td style="text-align: center;"><i class="fa fa-refresh fa-5x fa-spin"></i></td></tr>
+            <tr><td style="text-align: center;"><label class="label label-primary">{{localTranslate('LoadingEngineDetails')}}...</label></td></tr>
+        </table>
+        <div ng-if="!spinnerVisible && isStarted">
+                <ul class="nav nav-tabs" data-as-sortable="" data-ng-model="tabs">
+                    <li style="border: solid 1px black; height: 20px;" ng-repeat="(index,tab) in EngineDetails" data-as-sortable-item ng-class="tab.active ? 'active' : ''">
+                        <a href="" ng-click="selectTab(tab)" class="ng-binding" data-as-sortable-item-handle style="float: left; margin: 0; padding: 0 3px 0 3px; height: 18px;">
+                            {{tab.title}}&nbsp;
+                        </a>
+                        <button style="float: right; height: 18px; line-height: normal; margin: 0; padding: 0; background-color: lightgray" ng-click="closeTab(index)">X</button>
+                    </li>
+                </ul>
+                <div class="tab-content" style="width: 100%; height: 100%; padding: 0;">
+                    <div class="tab-pane" ng-repeat="(index,tab) in EngineDetails" ng-class="tab.active ? 'active' : ''">
+                        <div class="ng-isolate-scope">
+                            <div style="margin: 5px">
+                                <table>
+                                    <tr>
+                                        <td>{{curEngine.CommLabels[0]}}:&nbsp;</td>
+                                        <td>{{lastComm}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div ng-repeat="table in tab.content.TableInfo" style="margin-top: 5px;">
+                                <p style="padding: 0; padding-left:10px; margin: 0; background-color: #7c7155; color: white;">{{localTranslate(table.Category + 'Log')}}</p>
+                                <div style="overflow-x: auto; margin-bottom: 0;">
+                                    <table ng-attr-id="{{table.Category}}{{tab.id}}" class="scrollTable" width="100%" style="min-width: {{table.TableWidth}}px">
+                                        <thead>
+                                            <tr>
+                                                <th width="10" style="min-width: 10px; max-width: 10px;"></th>
+                                                <th ng-repeat="column in table.Columns" ng-attr-style="{{column.Style}}">{{localTranslate(column.Caption)}}</th>
+                                                <th width="{{table.FillWidth}}">&nbsp;</th>
+                                                <th ng-attr-id="padCol{{index}}" style="width: 17px; max-width: 17px; min-width: 17px; display: none;"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="height: {{tab.content.TableHeight}}px; max-height: {{tab.content.TableHeight}}px">
+                                            <tr ng-repeat="event in table.Events" ng-class-odd="'row-odd'" ng-class-even="'row-even'">
+                                                <td width="10"></td>
+                                                <td ng-if="event.colspan == 1" colspan="{{event.colspan}}" ng-repeat="column in table.Columns" ng-attr-style="{{column.Style}}">{{event[column.Caption]}}</td>
+                                                <td ng-if="event.colspan > 1" colspan="{{event.colspan}}" ng-attr-style="{{column.Style}}">
+                                                    <button ng-click="openDetails(event)" style="z-index: 200; position: relative;">...</button>&nbsp;{{event['Time']}}
+                                                </td>
+                                                <td width="{{table.FillWidth}}">&nbsp;</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="routeManager" ng-attr-id="{{table.Category}}{{tab.id}}Grips" style="height: 10px; overflow-x: hidden; background-color: transparent; z-index: 100; position: absolute;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 10px; float: left;">
+            <div ng-click="start()" style="float: left; text-align: justify; width: 75px;" ng-class="curEngine.CurrentState == 3 ? 'grayscale' : 'active'">
+                <img style="display: block; margin: 0 auto;" src="Content/images/CircleStart.png" />
+                <p style="text-align: center;">{{localTranslate('Start')}}</p>
+            </div>
+            <div ng-click="pause()" style="float: left; text-align: justify; width: 75px;" ng-class="curEngine.CurrentState != 3 ? 'grayscale' : 'active'">
+                <img style="display: block; margin: 0 auto;" src="Content/images/CirclePause2.png" />
+                <p style="text-align: center;">{{localTranslate('Pause')}}</p>
+            </div>
+            <div ng-click="stop()" style="float: left; text-align: justify; width: 75px;" ng-class="curEngine.CurrentState != 3 ? 'grayscale' : 'active'">
+                <img style="display: block; margin: 0 auto;" src="Content/images/CircleStop.png" />
+                <p style="text-align: center;">{{localTranslate('Stop')}}</p>
+            </div>
+        </div>
+
+        <div ng-repeat="engine in engines" style="float: left; text-align: justify; width: 75px; margin-top: 13px;">
+            <p ng-if="engine.CurrentState == 3" style="display: block; margin: 0 auto; cursor: pointer; background: #009e00; width: 30px; height: 30px; border-radius: 5px; border: 1px solid black;"></p>
+            <p ng-if="engine.CurrentState == 2" style="display: block; margin: 0 auto; cursor: pointer; background: yellow; width: 30px; height: 30px; border-radius: 5px; border: 1px solid black;"></p>
+            <p ng-if="engine.CurrentState == 1" style="display: block; margin: 0 auto; cursor: pointer; background: #b40000; width: 30px; height: 30px; border-radius: 5px; border: 1px solid black;"></p>
+            <p style="text-align: center;">{{engine.EngineId}}</p>
+        </div>
+
+        <div style="clear: both; border: 1px solid black; width: 100%;">
+            <table>
+                <tr>
+                    <td width="30" style="border-right: 1px solid black;">
+                        <p style="display: block; margin: 0 auto; background: #009e00; width: 20px; height: 20px; border-radius: 100%;"></p>
+                    </td>
+                    <td width="30" style="border-right: 1px solid black;">
+                        <p style="display: block; margin: 0 auto; background: #b40000; width: 20px; height: 20px; border-radius: 100%;"></p>
+                    </td>
+                    <td style="border-right: 1px solid black;">
+                        <p style="padding: 0 5px; display: block; margin: 0 auto;">{{localTranslate('Success')}}: 1%</p>
+                    </td>
+                    <td style="border-right: 1px solid black;">
+                        <p style="padding: 0 5px; display: block; margin: 0 auto;">{{localTranslate('NoRead')}}: 0%</p>
+                    </td>
+                    <td style="border-right: 1px solid black;">
+                        <p style="padding: 0 5px; display: block; margin: 0 auto;">{{localTranslate('DataError')}}: 99%</p>
+                    </td>
+                    <td style="border-right: 1px solid black;">
+                        <p style="padding: 0 5px; display: block; margin: 0 auto;">{{localTranslate('Hardware')}}: 0%</p>
+                    </td>
+                    <td width="10"></td>
+                    <td ng-repeat="stat in ioStats" style="margin-right: 5px;">
+                        <p style="float: left; text-align: center; cursor: pointer; display: block; margin: 10px auto; background: #009e00; width: 20px; height: 20px; border: 1px solid black;" title="{{stat.Description}}">{{stat.Name}}</p>&nbsp;
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

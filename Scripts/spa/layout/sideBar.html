@@ -1,0 +1,22 @@
+﻿<div id="sidebar" class="sidebar-offcanvas">
+    <div class="col-md-12">
+        <h3></h3>
+        <ul class="nav nav-pills nav-stacked">
+            <!--<li class="nav-divider"></li>
+             <li class=""><a ng-href="#/">Home<i class="fa fa-home fa-fw pull-right"></i></a></li>
+            <li class="nav-divider" ng-if="userData.isAdminUser"></li>-->
+            <li><a ng-href="#/users/" ng-if="userData.isAdminUser">Manage Employees<i class="fa fa-user-plus fa-fw pull-right"></i></a></li>
+            <li><a ng-href="#/groups/" ng-if="userData.isAdminUser">Manage Groups<i class="fa fa-user-plus fa-fw pull-right"></i></a></li>
+            <li><a ng-href="#/products/" ng-if="userData.isAdminUser">Manage Products<i class="fa fa-user-plus fa-fw pull-right"></i></a></li>
+            <li><a ng-href="#/skills/" ng-if="userData.isAdminUser">Manage Skills<i class="fa fa-user-plus fa-fw pull-right"></i></a></li>
+            <li><a ng-href="#/levels/" ng-if="userData.isAdminUser">Manage Levels<i class="fa fa-user-plus fa-fw pull-right"></i></a></li>
+            <li class="nav-divider" ng-if="userData.isManagerUser"></li>
+            <li><a ng-href="#/users/levels" ng-if="userData.isManagerUser">Employee Levels<i class="fa fa-user-plus fa-fw pull-right"></i></a></li>
+            <li class="nav-divider" ng-if="userData.isUserUser"></li>
+            <li><a ng-href="#/users/levels/{{userData.userId}}" ng-if="userData.isUserUser">Your Levels<i class="fa fa-user-plus fa-fw pull-right"></i></a></li>
+            <li class="nav-divider" ng-if="userData.isUserLoggedIn"></li>
+            <!--<li><a ng-href="#/login" ng-if="!userData.isUserLoggedIn">Login<i class="fa fa-sign-in fa-fw pull-right"></i></a></li>-->
+            <li><button type="button" class="btn btn-danger btn-sm" ng-click="logout();" ng-if="userData.isUserLoggedIn">Logout<i class="fa fa-sign-out fa-fw pull-right"></i></button></li>
+        </ul>
+    </div>
+</div>

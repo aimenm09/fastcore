@@ -1,0 +1,79 @@
+﻿<div class="panel panel-primary">
+    <div class="panel-heading">
+        {{localTranslate('ShortGroupItems')}}
+    </div>
+    <div class="panel-body">
+        <table id="Shorts" class="scrollTable" style="height: 335px; width: 100%;">
+            <thead>
+                <tr>
+                    <th id="expander" style="min-width: 20px; max-width: 20px"></th>
+                    <th id="colShortsSku" style="padding: 0 5px; min-width: 90px; max-width: 90px; cursor: pointer;">&nbsp;{{localTranslate('SKU')}}&nbsp;</th>
+                    <th id="colShortsOrderNumber" style="padding: 0 5px; min-width: 125px; max-width: 125px; cursor: pointer;">&nbsp;{{localTranslate('OrderNumber')}}&nbsp;</th>
+                    <th id="colShortsPONumber" style="padding: 0 5px; min-width: 110px; max-width: 110px; cursor: pointer;">&nbsp;{{localTranslate('PONumber')}}&nbsp;</th>
+                    <th id="colShortsQtyRequired" style="padding: 0 5px; min-width: 125px; max-width: 125px; cursor: pointer;">&nbsp;{{localTranslate('QtyRequired')}}&nbsp;</th>
+                    <th id="colShortsQuantity" style="padding: 0 5px; min-width: 100px; max-width: 100px; cursor: pointer;">&nbsp;{{localTranslate('Quantity')}}&nbsp;</th>
+                    <th width="{{fillWidth}}">&nbsp;</th>
+                    <th id="padColShorts" style="width: 17px; max-width: 17px; min-width: 17px; display: none;"></th>
+                </tr>
+            </thead>
+            <tbody style="height: 295px;">
+                <tr ng-repeat-start="item in Shorts" ng-class-odd="{'row-odd': item.Index != selectedItem.Index}"
+                    ng-class-even="{'row-even': item.Index != selectedItem.Index}"
+                    ng-class="{rowSelected: item.Index == selectedItem.Index}" style="vertical-align: top;">
+                    <td style="min-width: 20px;">
+                        &nbsp;<a ng-click="item.Visible = !item.Visible" href="" style="z-index: 200; position: relative; text-decoration: none;">
+                            <i ng-if="!item.Visible" class="fa fa-caret-right"></i>
+                            <i ng-if="item.Visible" class="fa fa-caret-down"></i>
+                        </a>
+                    </td>
+                    <td style="padding: 0 5px; min-width: 90px; max-width: 90px;">{{item.Sku}}</td>
+                    <td style="padding: 0 5px; min-width: 125px; max-width: 125px;">{{item.OrderNumber}}</td>
+                    <td style="padding: 0 5px; min-width: 110px; max-width: 110px;">{{item.PONumber}}</td>
+                    <td style="padding: 0 5px; min-width: 125px; max-width: 125px;">{{item.QtyRequired}}</td>
+                    <td style="padding: 0 5px; min-width: 100px; max-width: 100px;">{{item.InventoryQty}}</td>
+                    <td width="{{fillWidth}}">&nbsp;</td>
+                </tr>
+                <tr ng-if="item.Visible" ng-repeat-end="" ng-repeat="detail in item.Details"
+                    ng-class-odd="{'row-odd': detail.Index != selectedItem.Index}"
+                    ng-class-even="{'row-even': detail.Index != selectedItem.Index}"
+                    ng-class="{rowSelected: detail.Index == selectedItem.Index}"
+                    ng-include="getTemplate(detail)">
+                </tr>
+            </tbody>
+        </table>
+        <div id="ShortsGrips" style="overflow-x: hidden; z-index: 100; position: fixed;"></div>
+    </div>
+    <div class="panel-footer clearfix">
+        <div class="pull-left">
+            <button class="btn btn-primary" ng-click="matchQty()">{{localTranslate('MatchQty')}}</button>
+        </div>
+        <div class="pull-right">
+            <button class="btn btn-primary" ng-disabled="selectedItem.OrderNumber == ''" ng-click="remove()">{{localTranslate('Remove')}}</button>
+            <button class="btn btn-primary" ng-click="removeAll()">{{localTranslate('RemoveAll')}}</button>
+            <button class="btn btn-primary" ng-click="release()">{{localTranslate('Release')}}</button>
+            <button class="btn btn-primary" ng-click="cancel()">{{localTranslate('Cancel', true)}}</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="display">
+    <td style="min-width: 20px; max-width: 20px;"></td>
+    <td style="padding: 0 5px; min-width: 90px; max-width: 90px;"></td>
+    <td style="padding: 0 5px; min-width: 125px; max-width: 125px;">{{detail.OrderNumber}}</td>
+    <td style="padding: 0 5px; min-width: 110px; max-width: 110px;">{{detail.PONumber}}</td>
+    <td style="padding: 0 5px; min-width: 125px; max-width: 125px;">{{detail.QtyRequired}}</td>
+    <td style="padding: 0 5px; min-width: 100px; max-width: 100px;">{{detail.InventoryQty}}</td>
+    <td width="{{fillWidth}}">&nbsp;</td>
+</script>
+
+<script type="text/ng-template" id="edit">
+    <td style="min-width: 20px; max-width: 20px;"></td>
+    <td style="padding: 0 5px; min-width: 90px; max-width: 90px;"></td>
+    <td style="padding: 0 5px; min-width: 125px; max-width: 125px;">{{detail.OrderNumber}}</td>
+    <td style="padding: 0 5px; min-width: 110px; max-width: 110px;">{{detail.PONumber}}</td>
+    <td style="padding: 0 5px; min-width: 125px; max-width: 125px;">{{detail.QtyRequired}}</td>
+    <td>
+        <input class="input" type="text" ng-model="detail.InventoryQty" style="color: black; width: 100%; z-index: 200; position: relative;" />
+    </td>
+    <td width="{{fillWidth}}">&nbsp;</td>
+</script>

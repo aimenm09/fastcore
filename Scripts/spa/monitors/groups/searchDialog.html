@@ -1,0 +1,25 @@
+﻿<div class="panel panel-primary">
+    <div class="panel-heading">
+        {{SearchInfo.Title}}
+    </div>
+    <form role="form" novalidate angular-validator name="groupSearchForm" angular-validator-submit="addSearchTerm()">
+        <div class="panel-body">
+            <div class="">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="control-label" for="groupName">Search for Group Number, Group Name, or Order Number</label>
+                            <input autofocus="" type="text" class="form-control" required required-message="'Search term is required'" ng-model="SearchInfo.SearchTerm" name="searchTerm" id="searchTerm" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer clearfix">
+            <div class="pull-right">
+                <button type="submit" class="btn btn-primary">OK</button>
+                <button type="button" class="btn btn-primary" ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>
